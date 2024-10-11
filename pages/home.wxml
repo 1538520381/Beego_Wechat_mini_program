@@ -1,0 +1,15 @@
+<scroll-view class="home">
+  <view class="header">
+    <view class="leftHeader">
+      <image class="logo" src="/assets/pictures/logo.png"></image>
+      <view class="subtitle">Beego·必过</view>
+    </view>
+  </view>
+  <view class="main">
+    <image class="name" src='/assets/pictures/name.png'></image>
+    <!-- <button open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button> -->
+    <button bind:tap="login">立即体验</button>
+    <view class="slogan1">Beego 最懂你的AI学习助手</view>
+    <view class="slogan2">{{ chatMessage }}</view>
+  </view>
+</scroll-view>
