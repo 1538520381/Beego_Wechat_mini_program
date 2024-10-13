@@ -1,10 +1,10 @@
 const {
   sleep
-} = require("../utils/common");
+} = require("../../utils/common");
 
 const {
   login
-} = require("../apis/user")
+} = require("../../apis/user")
 
 Page({
   data: {
@@ -76,26 +76,34 @@ Page({
   },
 
   login() {
-    wx.login({
-      success: (res) => {
-        if (res.code) {
-          login(res.code).then((res) => {
-            if (res.data.code === 200) {
-              
-            } else {
-              wx.showToast({
-                title: res.data.message,
-                duration: 1000,
-                icon: 'error',
-                mask: true
-              })
-            }
-          }).catch((err) => {
-            
-          })
-        }
-      },
+    wx.redirectTo({
+      url: '../workbench/workbench',
     })
+    // wx.login({
+    //   success: (res) => {
+    //     if (res.code) {
+    //       login(res.code).then((res) => {
+    //         if (res.data.code === 200) {
+
+    //         } else {
+    //           wx.showToast({
+    //             title: res.data.message,
+    //             duration: 1000,
+    //             icon: 'error',
+    //             mask: true
+    //           })
+    //         }
+    //       }).catch((err) => {
+    //         wx.showToast({
+    //           title: "系统异常，请联系管理员",
+    //           duration: 1000,
+    //           icon: 'error',
+    //           mask: true
+    //         })
+    //       })
+    //     }
+    //   },
+    // })
   },
 
   createChatClock1() {

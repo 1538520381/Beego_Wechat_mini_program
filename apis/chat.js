@@ -1,0 +1,65 @@
+const {
+  request,
+  requestStream
+} = require("../utils/request")
+
+const addSession = (botId) => {
+  return request({
+    url: `/session/create?bot_id=${botId}`,
+    method: 'POST'
+  })
+}
+
+const deleteSession = (sessionId) => {
+  return request({
+    url: `/session/remove?session_id=${sessionId}`,
+    method: 'POST'
+  })
+}
+
+const getRobotList = () => {
+  return request({
+    url: '/bot/list',
+    method: 'POST',
+  })
+}
+
+const getSessionList = (botId) => {
+  return request({
+    url: `/session/retrieve?bot_id=${botId}`,
+    method: 'POST',
+  })
+}
+
+const getMessageList = (sessionId) => {
+  return request({
+    url: '/message/list',
+    method: 'POST',
+    data: {
+      session_id: sessionId,
+      limit: 2147483647
+    }
+  })
+}
+
+const chat = (botId, sessionId, content, fileUrl) => {
+  return requestStream({
+    url: '/chat/agent',
+    method: 'POST',
+    data: {
+      bot_id: botId,
+      session_id: sessionId,
+      content: content,
+      file_url: fileUrl
+    }
+  })
+}
+
+module.exports = {
+  addSession,
+  deleteSession,
+  getRobotList,
+  getSessionList,
+  getMessageList,
+  chat,
+}

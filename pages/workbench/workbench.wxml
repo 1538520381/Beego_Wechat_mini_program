@@ -1,0 +1,56 @@
+<view class="workbench">
+  <view class="mask" wx:if="{{menuVis}}" bind:tap="closeMenu"></view>
+
+  <scroll-view class="menuSidebar" scroll-y wx:if="{{menuVis}}">
+    <view class="robotMenu">
+      <view class="robot {{ robotActive === index ? 'robotActive' : '' }}" wx:for="{{robots}}" bind:tap="selectRobot" data-="{{index}}">
+        <image class="robotAvatar" src="{{item.avatar}}"></image>
+        <view class="robotName">{{ item.name }}</view>
+      </view>
+    </view>
+    <view class="divLine"></view>
+    <view class="sessionMenu">
+      <button class="addSession" bind:tap="addSession">新增会话</button>
+      <view class="session  {{ sessionActive === index ? 'sessionActive' : '' }}" wx:for="{{sessions}}" bind:tap="selectSession" data-="{{index}}">
+        <view class="sessionMessage">{{ item.message === null ? "NEW CHAT" : item.message.content }}</view>
+        <image class="deleteIcon" src="../../assets/pictures/delete.png" bind:tap="deleteSession" data-="{{index}}"></image>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view id="header" class="header">
+    <image class="menuIcon" src="../../assets/pictures/menu.png" bind:tap="openMenu"></image>
+    <view class="title">Beego</view>
+    <image class="userAvatar" src="../../assets/pictures/test.jpg" bind:tap="toPersonalCenter"></image>
+  </view>
+
+  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y>
+    <view class="row" wx:for="{{messages}}" wx:key="index">
+      <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
+        <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+        <!-- <view class="robotMessage">{{item.content}}</view> -->
+        <towxml class="robotMessage" nodes="{{item.content}}"></towxml>
+      </view>
+      <view class="userRow" wx:if="{{item.role === 'user'}}">
+        <!-- <view class="userMessage">{{item.content}}</view> -->
+        <towxml class="userMessage" nodes="{{item.content}}"></towxml>
+        <image class="userAvatar" src="../../assets/pictures/test.jpg"></image>
+      </view>
+    </view>
+    <view class="row" id="bottomRow">
+      <view class="robotRow" wx:if="{{loadingFlag}}">
+        <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+        <!-- <view class="robotMessage">{{loadingMessage}}</view> -->
+        <towxml class="robotMessage" nodes="{{loadingMessageMarkdown}}"></towxml>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view id="footer" class="footer">
+    <image class="fileButton" src="../../assets/pictures/camera.png"></image>
+    <image class="fileButton" src="../../assets/pictures/photo.png"></image>
+    <image class="fileButton" src="../../assets/pictures/folder.png"></image>
+    <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+    <button class="send" bind:tap="chat">发送</button>
+  </view>
+</view>

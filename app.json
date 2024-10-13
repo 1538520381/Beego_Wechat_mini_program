@@ -1,6 +1,8 @@
 {
   "pages": [
-    "pages/home"
+    "pages/home/home",
+    "pages/workbench/workbench",
+    "pages/personalCenter/personalCenter"
   ],
   "window": {
     "navigationBarTextStyle": "black",
