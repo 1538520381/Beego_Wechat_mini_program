@@ -84,7 +84,6 @@ Page({
             enterTime: res.data.data["enter_time"]
           }
         })
-        console.log(this.data.user)
       } else {
         wx.showToast({
           title: res.data.message,

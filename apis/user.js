@@ -19,7 +19,21 @@ const getUserByToken = () => {
   })
 }
 
+const improvePersonalInformation = (userName, school, major, enterTime) => {
+  return request({
+    url: '/user/mustInfo',
+    method: 'POST',
+    data: {
+      user_name: userName,
+      school: school,
+      major: major,
+      enter_time: enterTime
+    }
+  })
+}
+
 module.exports = {
   login,
-  getUserByToken
+  getUserByToken,
+  improvePersonalInformation
 }

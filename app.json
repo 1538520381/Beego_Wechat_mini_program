@@ -2,7 +2,8 @@
   "pages": [
     "pages/home/home",
     "pages/workbench/workbench",
-    "pages/personalCenter/personalCenter"
+    "pages/personalCenter/personalCenter",
+    "pages/personalInformation/personalInformation"
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -1,0 +1,31 @@
+<view class="personalInformation">
+  <view class="header">
+    <view class="title">个人信息完善</view>
+    <view class="button" bind:tap="confirm">
+      <image class="confirmIcon" src="../../assets/pictures/confirm.png"></image>
+      <view class="confirmText">确定</view>
+    </view>
+  </view>
+  <view class="main">
+    <view class="item">
+      <view class="key">昵称</view>
+      <input class="value" value="{{user.userName}}" bindinput="userNameInput" placeholder="请输入昵称"></input>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">所在学校</view>
+      <input class="value" value="{{user.school}}" bindinput="schoolInput" placeholder="请选择所在学校"></input>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">所在专业</view>
+      <input class="value" value="{{user.major}}" bindinput="majorInput" placeholder="请选择所在专业"></input>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">入学年份</view>
+      <input class="value" value="{{user.enterTime}}" bindinput="enterTimeInput" placeholder="请选择入学年份"></input>
+    </view>
+    <view class="divLine"></view>
+  </view>
+</view>
