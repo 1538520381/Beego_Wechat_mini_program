@@ -330,8 +330,7 @@ Page({
                 messages: messages,
                 loadingFlag: false,
               })
-            } else if (strs[i].startsWith("event:")) {
-            } else if (strs[i].startsWith("data:")) {
+            } else if (strs[i].startsWith("event:")) {} else if (strs[i].startsWith("data:")) {
               if (strs[i].length !== "data:".length) {
                 this.data.loadingMessage = this.data.loadingMessage + strs[i].substring("data:".length)
                 this.setData({
@@ -389,10 +388,13 @@ Page({
     })
   },
 
-  toPersonalCenter(){
-    wx.redirectTo({
+  toPersonalCenter() {
+    wx.navigateTo({
       url: '../personalCenter/personalCenter',
     })
+    // wx.redirectTo({
+    //   url: '../personalCenter/personalCenter',
+    // })
   },
 
   input(e) {

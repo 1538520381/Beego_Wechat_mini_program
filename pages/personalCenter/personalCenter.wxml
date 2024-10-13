@@ -1,2 +1,29 @@
-<!--pages/personalCenter/personalCenter.wxml-->
-<text>pages/personalCenter/personalCenter.wxml</text>
+<view class="personalCenter">
+  <view class="header">
+    <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image>
+    <view class="title">个人中心</view>
+  </view>
+  <view class="main">
+    <image class="userAvatar" src="{{user.avatarUrl}}"></image>
+    <view class="item">
+      <view class="key">昵称</view>
+      <view class="value">{{user.userName}}</view>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">所在学校</view>
+      <view class="value">{{user.school}}</view>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">所在专业</view>
+      <view class="value">{{user.major}}</view>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">入学年份</view>
+      <view class="value">{{user.enterTime}}</view>
+    </view>
+    <view class="divLine"></view>
+  </view>
+</view>

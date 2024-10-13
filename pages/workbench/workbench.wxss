@@ -252,8 +252,6 @@ page {
   max-height: 300px;
 
   z-index: 0;
-
-  background-color: red;
 }
 
 .workbench .footer .fileButton {
