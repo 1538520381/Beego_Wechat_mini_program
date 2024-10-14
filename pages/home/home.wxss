@@ -16,8 +16,6 @@ page {
 
   width: 100%;
   height: 50px;
-
-  background-color: #F3F5FA;
 }
 
 .home .header .leftHeader {
@@ -27,10 +25,9 @@ page {
 .home .header .leftHeader .logo{
   display: inline-block;
 
-  margin: 5px 0 5px 5px;
+  margin:  0 0 0 5px;
 
-  width: 40px;
-  height: 40px;
+  height: 100%;
 }
 
 .home .header .leftHeader .subtitle{
@@ -50,15 +47,15 @@ page {
 }
 
 .home .main .name{
-  margin: 30px 0 0 0;
+  /* margin: 10px 0 0 0; */
+
   width: 80%;
-  height: 100px;
 }
 
 .home .main .slogan1{
   margin: 10px 0 0 0;
 
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .home .main .slogan2{
