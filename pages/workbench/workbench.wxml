@@ -47,10 +47,9 @@
   </scroll-view>
 
   <view id="footer" class="footer">
-    <image class="fileButton" src="../../assets/pictures/camera.png"></image>
-    <image class="fileButton" src="../../assets/pictures/photo.png"></image>
-    <image class="fileButton" src="../../assets/pictures/folder.png"></image>
+    <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="uploadImage"></image>
+    <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="uploadFile"></image>
     <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
-    <button class="send" bind:tap="chat">发送</button>
+    <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
   </view>
 </view>

@@ -1,5 +1,9 @@
 const app = getApp()
 
+const CONFIG = require('../../config')
+
+import TextDecoder from '../../miniprogram/miniprogram-text-decoder'
+
 const {
   isEmpty
 } = require("../../utils/common")
@@ -295,29 +299,48 @@ Page({
       })
     })
   },
-  chat() {
-    if (!this.data.loadingFlag && !isEmpty(this.data.input)) {
-      this.data.requestStream = chat(this.data.robots[this.data.robotActive].id, this.data.sessions[this.data.sessionActive].id, this.data.input);
+  chat(data) {
+    let fileUrl = data.currentTarget.dataset[""]
+    if (!this.data.loadingFlag && (!isEmpty(this.data.input) || !isEmpty(fileUrl))) {
+      this.data.requestStream = chat(this.data.robots[this.data.robotActive].id, this.data.sessions[this.data.sessionActive].id, isEmpty(fileUrl) ? this.data.input : "请描述下该文件",fileUrl);
       let messages = this.data.messages
-      messages.push({
-        role: 'user',
-        contentType: 'text',
-        content: app.towxml(this.data.input, 'markdown')
-      })
-      this.setData({
-        messages: messages,
-        input: '',
-        loadingFlag: true,
-        loadingMessage: '',
-        loadingMessageMarkdown: {}
-      })
+
+      if (isEmpty(fileUrl)) {
+        messages.push({
+          role: 'user',
+          contentType: 'text',
+          content: app.towxml(this.data.input, 'markdown')
+        })
+        this.setData({
+          messages: messages,
+          input: "",
+          loadingFlag: true,
+          loadingMessage: '',
+          loadingMessageMarkdown: {}
+        })
+      }else{
+        this.setData({
+          messages: messages,
+          loadingFlag: true,
+          loadingMessage: '',
+          loadingMessageMarkdown: {}
+        })
+      }
       this.toScrollBottom()
 
       this.data.requestStream.onChunkReceived(res => {
+        console.log(res.data)
         if (this.data.loadingFlag) {
-          // const decoder = new TextDecoder('utf-8')
-          // let strs = decoder.decode(res.data).split("\n")
-          let strs = decodeURIComponent(escape(String.fromCharCode(...res.data))).split("\n")
+          let strs = []
+          try{
+            const arrayBuffer = new Uint8Array(res.data)
+            let str = new TextDecoder().decode(arrayBuffer)
+            console.log('deMessage', str)
+            strs = str.split("\n")
+          }catch(e){
+            console.log(e)
+          }
+          console.log(strs)
           for (let i in strs) {
             if (strs[i].startsWith("event:done")) {
               let messages = this.data.messages
@@ -357,6 +380,78 @@ Page({
         }
       });
     }
+  },
+  unit8ArrayToString(fileData){
+    let string = "";
+    for(let i = 0;i < fileData.length; i ++){
+      string += String.fromCharCode(fileData[i])
+    }
+    return string
+  },
+  uploadImage(){
+    let _this = this
+
+    wx.chooseMedia({
+      count: 1,
+      success(res){
+        const file = res.tempFiles
+        wx.uploadFile({
+          url: CONFIG.baseUrl + '/file/uploadPicture',
+          method: "POST",
+          header: {
+            'Authorization': CONFIG.token
+          },
+          filePath: file[0].path,
+          name: 'file',
+          success(res) {
+            console.log(res)
+            _this.chat({
+              currentTarget: {
+                dataset: {
+                  "": JSON.parse(res.data).data['min_io_url']
+                }
+              }
+            })
+          },
+          fail(err) {
+            console.log(err)
+          }
+        })
+      }
+    })
+  },
+  uploadFile() {
+    let _this = this
+
+    wx.chooseMessageFile({
+      count: 1,
+      type: 'file',
+      success(res) {
+        const file = res.tempFiles
+        wx.uploadFile({
+          url: CONFIG.baseUrl + '/file/uploadPicture',
+          method: "POST",
+          header: {
+            'Authorization': CONFIG.token
+          },
+          filePath: file[0].path,
+          name: 'file',
+          success(res) {
+            console.log(res)
+            _this.chat({
+              currentTarget: {
+                dataset: {
+                  "": JSON.parse(res.data).data['min_io_url']
+                }
+              }
+            })
+          },
+          fail(err) {
+            console.log(err)
+          }
+        })
+      }
+    })
   },
 
   selectRobot(data) {
