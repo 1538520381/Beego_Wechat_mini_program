@@ -1,18 +1,16 @@
 <scroll-view class="home">
+  <canvas id="bubbleCanvas" type="2d" style="position: absolute; top: 0; left: 0; width: 100vw;height: 100vh;"></canvas>
   <view class="header">
     <view class="leftHeader">
-      <!-- <image class="logo" src="/assets/pictures/logo.png"></image>
-      <view class="subtitle">Beego·必过</view> -->
-      <!-- <image class="logo" src="/assets/pictures/logo.jpg" mode="heightFix"></image> -->
+      <image class="logo" src="/assets/pictures/logo.jpg" mode="heightFix"></image>
+      <!-- <view class="subtitle">Beego·必过</view> -->
     </view>
   </view>
   <view class="main">
-    <image class="name" src='/assets/pictures/logo.jpg' mode="widthFix"></image>
-    <button open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button>
-    <button class="startButton" bind:tap="login">
-      <text>开始体验\nLet'sBeego!</text>
-    </button>
-    <view class="slogan1">贴合高校使用场景，最懂大学生的AI学习软件</view>
-    <view class="slogan2">{{ chatMessage }}</view>
+    <!-- <image class="name" src='/assets/pictures/logo.jpg' mode="widthFix"></image> -->
+    <view class="slogan1">贴合高校使用场景</view>
+    <view class="slogan1">最懂大学生的AI学习软件</view>
+    <button class='loginButton' open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button>
+    <!-- <view class="slogan2">{{ chatMessage }}</view> -->
   </view>
 </scroll-view>

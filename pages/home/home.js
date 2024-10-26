@@ -30,7 +30,66 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
+    const query = wx.createSelectorQuery();
+    query.select('#bubbleCanvas').node().exec((res) => {
+      console.log(res)
+      // 获取设备窗口的宽高
+      const sysInfo = wx.getSystemInfoSync();
+      const screenWidth = sysInfo.windowWidth;
+      const screenHeight = sysInfo.windowHeight;
 
+      // 计算Canvas的实际宽高
+      const canvasWidth = screenWidth;
+      const canvasHeight = screenHeight;
+
+      const canvas = res[0].node;
+      // 设置Canvas的宽高属性
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      const ctx = canvas.getContext('2d');
+
+      const bubbles = []; // 存储气泡信息的数组
+      const numBubbles = 24; // 气泡数量
+
+      // 初始化气泡信息
+      for (let i = 0; i < numBubbles; i++) {
+        bubbles.push({
+          x: Math.random() * canvas.width, // x坐标
+          y: Math.random() * canvas.height, // y坐标
+          radius: Math.random() * canvasWidth * 0.05, // 半径
+          speed: Math.random() * 0.2 + 0.3, // 速度
+          color: `rgba(46, 204, 113, 0.3)` // 颜色，绿色透明
+        });
+      }
+
+      // 绘制气泡
+      const drawBubbles = () => {
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight); // 清除画布
+        for (let i = 0; i < numBubbles; i++) {
+          ctx.beginPath();
+          ctx.arc(bubbles[i].x, bubbles[i].y, bubbles[i].radius, 0, Math.PI * 2);
+          ctx.fillStyle = bubbles[i].color;
+          ctx.fill();
+          ctx.closePath();
+          ctx.strokeStyle = 'rgba(46, 204, 113, 0.8)'; // 设置描边颜色为黑色
+          ctx.lineWidth = 1; // 设置描边线宽
+          ctx.stroke(); // 绘制描边
+          ctx.closePath();
+
+          // 更新气泡位置
+          bubbles[i].y -= bubbles[i].speed;
+
+          // 如果气泡超出画布顶部，重新放置到底部
+          if (bubbles[i].y < -bubbles[i].radius) {
+            bubbles[i].x = Math.random() * canvas.width;
+            bubbles[i].y = canvas.height + bubbles[i].radius;
+          }
+        }
+        canvas.requestAnimationFrame(drawBubbles); // 使用requestAnimationFrame进行动画循环
+      };
+      drawBubbles(); // 开始绘制气泡
+    });
   },
 
   /**
@@ -87,26 +146,29 @@ Page({
       success: (res) => {
         console.log(res.code)
         if (res.code) {
-          login(res.code).then((res) => {
-            if (res.data.code === 200) {
-
-            } else {
-
-              wx.showToast({
-                title: res.data.message,
-                duration: 1000,
-                icon: 'error',
-                mask: true
-              })
-            }
-          }).catch((err) => {
-            wx.showToast({
-              title: "系统异常，请联系管理员",
-              duration: 1000,
-              icon: 'error',
-              mask: true
-            })
+          wx.redirectTo({
+            url: '../home/home.js',
           })
+          // login(res.code).then((res) => {
+          //   if (res.data.code === 200) {
+
+          //   } else {
+
+          //     wx.showToast({
+          //       title: res.data.message,
+          //       duration: 1000,
+          //       icon: 'error',
+          //       mask: true
+          //     })
+          //   }
+          // }).catch((err) => {
+          //   wx.showToast({
+          //     title: "系统异常，请联系管理员",
+          //     duration: 1000,
+          //     icon: 'error',
+          //     mask: true
+          //   })
+          // })
         }
       },
     })
