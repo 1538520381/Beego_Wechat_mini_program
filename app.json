@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/home/home",
     "pages/workbench/workbench",
     "pages/personalCenter/personalCenter",
     "pages/personalInformation/personalInformation"

@@ -42,7 +42,7 @@ const getMessageList = (sessionId) => {
   })
 }
 
-const chat = (botId, sessionId, content, fileUrl) => {
+const chat = (botId, sessionId, content, fileType, fileName, fileUrl) => {
   return requestStream({
     url: '/chat/agent',
     method: 'POST',
@@ -50,7 +50,9 @@ const chat = (botId, sessionId, content, fileUrl) => {
       bot_id: botId,
       session_id: sessionId,
       content: content,
-      file_url: fileUrl
+      file_type: fileType,
+      file_name: fileName,
+      file_url: fileUrl,
     }
   })
 }

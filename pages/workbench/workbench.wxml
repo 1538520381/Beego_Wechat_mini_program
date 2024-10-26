@@ -11,8 +11,8 @@
     <view class="divLine"></view>
     <view class="sessionMenu">
       <button class="addSession" bind:tap="addSession">新增会话</button>
-      <view class="session  {{ sessionActive === index ? 'sessionActive' : '' }}" wx:for="{{sessions}}" bind:tap="selectSession" data-="{{index}}">
-        <view class="sessionMessage">{{ item.message === null ? "NEW CHAT" : item.message.content }}</view>
+      <view class="session  {{ sessionActive === index ? 'sessionActive' : '' }}" wx:for="{{sessions}}">
+        <view class="sessionMessage" bind:tap="selectSession" data-="{{index}}">{{ (item.message === null || item.message.content === null) ? "NEW CHAT" : item.message.content }}</view>
         <image class="deleteIcon" src="../../assets/pictures/delete.png" bind:tap="deleteSession" data-="{{index}}"></image>
       </view>
     </view>
@@ -33,7 +33,22 @@
       </view>
       <view class="userRow" wx:if="{{item.role === 'user'}}">
         <!-- <view class="userMessage">{{item.content}}</view> -->
-        <towxml class="userMessage" nodes="{{item.content}}"></towxml>
+        <view class="userMessageContainer">
+          <view class="fileContainer" wx:if="{{item.fileUrl != null}}">
+            <image class="file" src="{{item.fileUrl}}" mode="heightFix" wx:if="{{item.fileType === 'jpg' || item.fileType === 'png'}}"></image>
+            <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{item.fileType === 'csv'}}"></image>
+            <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{item.fileType === 'xlsx' || item.fileType === 'xls'}}"></image>
+            <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{item.fileType === 'mp4'}}"></image>
+            <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{item.fileType === 'pdf'}}"></image>
+            <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{item.fileType === 'ppt'}}"></image>
+            <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{item.fileType === 'rar'}}"></image>
+            <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{item.fileType === 'txt'}}"></image>
+            <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{item.fileType === 'docx' || item.fileType === 'doc'}}"></image>
+            <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{item.fileType === 'zip'}}"></image>
+            <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else></image>
+          </view>
+          <towxml class="userMessage" nodes="{{item.content}}" v-if="{{item.content !== null}}"></towxml>
+        </view>
         <image class="userAvatar" src="../../assets/pictures/test.jpg"></image>
       </view>
     </view>
@@ -47,9 +62,26 @@
   </scroll-view>
 
   <view id="footer" class="footer">
-    <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="uploadImage"></image>
-    <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="uploadFile"></image>
-    <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+    <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
+    <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
+    <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+    <view class="inputArea">
+      <view class="fileContainer" wx:if="{{file != null}}">
+        <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
+        <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}"></image>
+        <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{file.fileType === 'csv'}}"></image>
+        <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{file.fileType === 'xlsx' || file.fileType === 'xls'}}"></image>
+        <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{file.fileType === 'mp4'}}"></image>
+        <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{file.fileType === 'pdf'}}"></image>
+        <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{file.fileType === 'ppt'}}"></image>
+        <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{file.fileType === 'rar'}}"></image>
+        <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{file.fileType === 'txt'}}"></image>
+        <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{file.fileType === 'docx' || file.fileType === 'doc'}}"></image>
+        <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{file.fileType === 'zip'}}"></image>
+        <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else></image>
+      </view>
+      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+    </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
   </view>
 </view>

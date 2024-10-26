@@ -8,7 +8,7 @@
   </view>
   <view class="main">
     <image class="name" src='/assets/pictures/logo.jpg' mode="widthFix"></image>
-    <!-- <button open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button> -->
+    <button open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button>
     <button class="startButton" bind:tap="login">
       <text>开始体验\nLet'sBeego!</text>
     </button>

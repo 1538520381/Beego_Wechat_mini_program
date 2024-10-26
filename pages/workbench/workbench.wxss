@@ -216,14 +216,24 @@ page {
 
 .workbench .main .row .userRow {
   text-align: right;
-
 }
 
-.workbench .main .row .userRow .userMessage {
+.workbench .main .row .userRow .userMessageContainer {
   display: inline-block;
+
+  margin: 0 4px 0 0;
 
   max-width: calc(90% - 5px - 32px - 10px);
 
+  text-align: right;
+}
+
+.workbench .main .row .userRow .userMessageContainer .fileContainer .file {
+  max-width: 100px;
+  height: 50px;
+}
+
+.workbench .main .row .userRow .userMessageContainer .userMessage {
   font-size: 16px;
 
   text-align: left;
@@ -254,6 +264,21 @@ page {
   z-index: 0;
 }
 
+.workbench .footer .scrollToBottomButton{
+  position: absolute;
+
+  left: calc(50% - 30px / 2 - 2px / 2);
+  top: -30px;
+
+  width: 30px;
+  height: 30px;
+
+  border: 2px solid #DFE5EC;
+  border-radius: 50%;
+
+  background-color: #ffffff;
+}
+
 .workbench .footer .fileButton {
   margin: 8px 0 8px 6px;
 
@@ -261,17 +286,47 @@ page {
   height: 24px;
 }
 
-.workbench .footer .input {
+.workbench .footer .inputArea {
   display: inline-block;
 
   vertical-align: bottom;
 
-  margin: 5px 0 5px 5px;
-  padding: 5px 0 0 5px;
+  margin: 6px 10px 5px 10px;
 
-  width: calc(100% - 6px * 2 - 24px * 2 - 50px - 5px * 2 - 5px - 5px - 2px);
-  height: 30px;
+  width: calc(100% - 6px * 2 - 24px * 2 - 50px - 5px * 2 - 10px * 2);
+}
 
+.workbench .footer .inputArea .fileContainer {
+  display: inline-block;
+
+  position: relative;
+
+  padding: 0 2px 2px 2px;
+}
+
+.workbench .footer .inputArea .fileContainer .removeFile {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background-color: #C9C9C9;
+}
+
+.workbench .footer .inputArea .fileContainer .file {
+  max-width: 100px;
+  height: 50px;
+}
+
+.workbench .footer .inputArea .input {
+  padding: 2px 5px 2px 5px;
+
+  width: calc(100% - 5px * 2);
   max-height: 90px;
 
   font-size: 14px;
@@ -285,7 +340,7 @@ page {
 
   vertical-align: bottom;
 
-  margin: 5px 0 5px 5px;
+  margin: 5px 5px 5px 5px;
   padding: 0 0 0 0;
 
   width: 50px;

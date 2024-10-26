@@ -75,35 +75,41 @@ Page({
 
   },
 
-  login() {
-    wx.redirectTo({
-      url: '../workbench/workbench',
-    })
-    // wx.login({
-    //   success: (res) => {
-    //     if (res.code) {
-    //       login(res.code).then((res) => {
-    //         if (res.data.code === 200) {
-
-    //         } else {
-    //           wx.showToast({
-    //             title: res.data.message,
-    //             duration: 1000,
-    //             icon: 'error',
-    //             mask: true
-    //           })
-    //         }
-    //       }).catch((err) => {
-    //         wx.showToast({
-    //           title: "系统异常，请联系管理员",
-    //           duration: 1000,
-    //           icon: 'error',
-    //           mask: true
-    //         })
-    //       })
-    //     }
-    //   },
+  login(e) {
+    // wx.redirectTo({
+    //   url: '../workbench/workbench',
     // })
+    console.log(e.detail.code)
+    // login(e.detail.code).then((res) => {
+    //   console.log(res)
+    // })
+    wx.login({
+      success: (res) => {
+        console.log(res.code)
+        if (res.code) {
+          login(res.code).then((res) => {
+            if (res.data.code === 200) {
+
+            } else {
+
+              wx.showToast({
+                title: res.data.message,
+                duration: 1000,
+                icon: 'error',
+                mask: true
+              })
+            }
+          }).catch((err) => {
+            wx.showToast({
+              title: "系统异常，请联系管理员",
+              duration: 1000,
+              icon: 'error',
+              mask: true
+            })
+          })
+        }
+      },
+    })
   },
 
   createChatClock1() {

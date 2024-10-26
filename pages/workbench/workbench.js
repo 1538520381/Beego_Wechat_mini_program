@@ -34,7 +34,8 @@ Page({
 
     heightClock: null,
 
-    input: "",
+    input: null,
+    file: null,
 
     requestStream: null,
     loadingMessage: "",
@@ -61,28 +62,17 @@ Page({
         _this.data.windowHeight = res.windowHeight
       }
     })
-    this.data.heightClock = setInterval(() => {
-      let query = wx.createSelectorQuery().in(this);
-      query.select('#header').boundingClientRect();
-      query.select('#footer').boundingClientRect();
-      query.exec((res) => {
-        this.data.headerHeight = res[0].height;
-        this.data.footerHeight = res[1].height;
-        this.setData({
-          mainHeight: this.data.windowHeight - this.data.headerHeight - this.data.footerHeight
-        })
-      })
-    }, 20)
-
 
     await this.getRobotList()
+
+    this.updateMainHeight()
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-
+    this.updateMainHeight()
   },
 
   /**
@@ -181,8 +171,12 @@ Page({
             avatar: res.data.data[i]['bot_avatar'],
             name: res.data.data[i]['bot_name'],
             description: res.data.data[i]['description'],
+            sort: res.data.data[i]['sort']
           })
         }
+        robots.sort((o1, o2) => {
+          return o1.sort - o2.sort
+        })
         this.setData({
           robots: robots,
           robotActive: 0
@@ -230,9 +224,12 @@ Page({
               }
             })
           }
+          sessions.sort(function (o1, o2) {
+            return new Date(o2.createTime.replace(/-/g, '/')).getTime() - new Date(o1.createTime.replace(/-/g, '/')).getTime()
+          })
           this.setData({
             sessions: sessions,
-            sessionActive: 0
+            sessionActive: Math.min(this.data.sessionActive, sessions.length - 1)
           })
           this.getMessageList()
         }
@@ -271,8 +268,10 @@ Page({
             id: res.data.data[i]['message_id'],
             sessionId: res.data.data[i]['session_id'],
             role: res.data.data[i]['role'],
-            contentType: res.data.data[i]['content_type'],
-            content: app.towxml(res.data.data[i]["content"], 'markdown'),
+            content: isEmpty(res.data.data[i]["content"]) ? null : app.towxml(res.data.data[i]["content"], 'markdown'),
+            fileType: res.data.data[i]['file_type'],
+            fileName: res.data.data[i]['file_name'],
+            fileUrl: res.data.data[i]['file_url'],
             createTime: res.data.data[i]['created_time']
           })
         }
@@ -299,128 +298,141 @@ Page({
       })
     })
   },
-  chat(data) {
-    let fileUrl = data.currentTarget.dataset[""]
-    if (!this.data.loadingFlag && (!isEmpty(this.data.input) || !isEmpty(fileUrl))) {
-      this.data.requestStream = chat(this.data.robots[this.data.robotActive].id, this.data.sessions[this.data.sessionActive].id, isEmpty(fileUrl) ? this.data.input : "请描述下该文件",fileUrl);
-      let messages = this.data.messages
+  chat() {
+    if (!this.data.loadingFlag) {
+      this.data.requestStream = chat(
+        this.data.robots[this.data.robotActive].id,
+        this.data.sessions[this.data.sessionActive].id,
+        this.data.input,
+        isEmpty(this.data.file) ? null : this.data.file.fileType,
+        isEmpty(this.data.file) ? null : this.data.file.fileName,
+        isEmpty(this.data.file) ? null : this.data.file.fileUrl
+      );
 
-      if (isEmpty(fileUrl)) {
-        messages.push({
-          role: 'user',
-          contentType: 'text',
-          content: app.towxml(this.data.input, 'markdown')
-        })
-        this.setData({
-          messages: messages,
-          input: "",
-          loadingFlag: true,
-          loadingMessage: '',
-          loadingMessageMarkdown: {}
-        })
-      }else{
-        this.setData({
-          messages: messages,
-          loadingFlag: true,
-          loadingMessage: '',
-          loadingMessageMarkdown: {}
-        })
-      }
+      let messages = this.data.messages
+      messages.push({
+        role: 'user',
+        content: isEmpty(this.data.input) ? null : app.towxml(this.data.input, 'markdown'),
+        fileType: isEmpty(this.data.file) ? null : this.data.file.fileType,
+        fileName: isEmpty(this.data.file) ? null : this.data.file.fileName,
+        fileUrl: isEmpty(this.data.file) ? null : this.data.file.fileUrl
+      })
+      this.setData({
+        messages: messages,
+        input: "",
+        file: null,
+        loadingFlag: true,
+        loadingMessage: '',
+        loadingMessageMarkdown: {}
+      })
+      this.updateMainHeight()
       this.toScrollBottom()
+
+      this.data.dataFlag = false
 
       this.data.requestStream.onChunkReceived(res => {
         console.log(res.data)
         if (this.data.loadingFlag) {
+
           let strs = []
-          try{
+          try {
             const arrayBuffer = new Uint8Array(res.data)
             let str = new TextDecoder().decode(arrayBuffer)
-            console.log('deMessage', str)
             strs = str.split("\n")
-          }catch(e){
+          } catch (e) {
+            wx.showToast({
+              title: "系统异常，请联系管理员",
+              duration: 1000,
+              icon: 'none',
+              mask: true
+            })
             console.log(e)
           }
+
           console.log(strs)
           for (let i in strs) {
-            if (strs[i].startsWith("event:done")) {
+            if (strs[i].startsWith("event:all")) {
+              this.data.dataFlag = true
+            } else if (strs[i].startsWith("event:done")) {
               let messages = this.data.messages
               messages.push({
                 role: 'assistant',
-                contentType: 'text',
-                content: app.towxml(this.data.loadingMessage, 'markdown')
+                content: app.towxml(this.data.loadingMessage.replace(/\\n/g, "\n"), 'markdown')
               })
               this.setData({
                 messages: messages,
+                loadingMessage: "",
                 loadingFlag: false,
               })
-            } else if (strs[i].startsWith("event:")) {} else if (strs[i].startsWith("data:")) {
-              if (strs[i].length !== "data:".length) {
-                this.data.loadingMessage = this.data.loadingMessage + strs[i].substring("data:".length)
-                this.setData({
-                  loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
-                })
+            } else if (strs[i].startsWith("event:")) {
+
+            } else if (strs[i].startsWith("data:")) {
+              if (!this.data.dataFlag) {
+                this.data.loadingMessage += strs[i].substring(5)
               } else {
-                if (this.data.dataFlag) {
-                  this.data.loadingMessage = this.data.loadingMessage + '\n'
-                  this.setData({
-                    loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
-                  })
-                }
-                this.data.dataFlag = true
+                this.data.loadingMessage = strs[i].substring(5)
+                this.data.dataFlag = false
               }
-            } else if (strs[i].length !== 0 && this.data.dataFlag) {
-              this.data.loadingMessage = this.data.loadingMessage + strs[i]
               this.setData({
                 loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
               })
-              this.data.dataFlag = false
+            } else {
+              this.data.loadingMessage += strs[i]
+              this.setData({
+                loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
+              })
             }
           }
-          this.toScrollBottom()
         }
       });
     }
   },
-  unit8ArrayToString(fileData){
+  unit8ArrayToString(fileData) {
     let string = "";
-    for(let i = 0;i < fileData.length; i ++){
+    for (let i = 0; i < fileData.length; i++) {
       string += String.fromCharCode(fileData[i])
     }
     return string
   },
-  uploadImage(){
+  uploadFile(file, type) {
+    let _this = this
+    wx.uploadFile({
+      url: CONFIG.baseUrl + '/file/uploadPicture?bucketType=1',
+      method: "POST",
+      header: {
+        'Authorization': CONFIG.token
+      },
+      filePath: type === 0 ? file[0].tempFilePath : file[0].path,
+      name: 'file',
+      success(res) {
+        res.data = JSON.parse(res.data)
+        _this.setData({
+          file: {
+            id: res.data.data['file_id'],
+            fileName: res.data.data['file_name'],
+            fileType: res.data.data['file_type'],
+            fileUrl: res.data.data['file_url']
+          }
+        })
+        _this.updateMainHeight()
+      },
+      fail(err) {
+        console.log(err)
+      }
+    })
+  },
+  userUploadImage() {
     let _this = this
 
     wx.chooseMedia({
       count: 1,
-      success(res){
+      success(res) {
         const file = res.tempFiles
-        wx.uploadFile({
-          url: CONFIG.baseUrl + '/file/uploadPicture',
-          method: "POST",
-          header: {
-            'Authorization': CONFIG.token
-          },
-          filePath: file[0].path,
-          name: 'file',
-          success(res) {
-            console.log(res)
-            _this.chat({
-              currentTarget: {
-                dataset: {
-                  "": JSON.parse(res.data).data['min_io_url']
-                }
-              }
-            })
-          },
-          fail(err) {
-            console.log(err)
-          }
-        })
-      }
+        _this.uploadFile(file, 0)
+      },
     })
   },
-  uploadFile() {
+  userUploadFile() {
     let _this = this
 
     wx.chooseMessageFile({
@@ -428,30 +440,16 @@ Page({
       type: 'file',
       success(res) {
         const file = res.tempFiles
-        wx.uploadFile({
-          url: CONFIG.baseUrl + '/file/uploadPicture',
-          method: "POST",
-          header: {
-            'Authorization': CONFIG.token
-          },
-          filePath: file[0].path,
-          name: 'file',
-          success(res) {
-            console.log(res)
-            _this.chat({
-              currentTarget: {
-                dataset: {
-                  "": JSON.parse(res.data).data['min_io_url']
-                }
-              }
-            })
-          },
-          fail(err) {
-            console.log(err)
-          }
-        })
+        _this.uploadFile(file, 1)
       }
     })
+  },
+
+  removeFile() {
+    this.setData({
+      file: null
+    })
+    this.updateMainHeight()
   },
 
   selectRobot(data) {
@@ -473,9 +471,11 @@ Page({
   },
 
   openMenu() {
-    this.setData({
-      menuVis: true
-    })
+    if (!this.data.loadingFlag) {
+      this.setData({
+        menuVis: true
+      })
+    }
   },
   closeMenu() {
     this.setData({
@@ -492,10 +492,24 @@ Page({
     // })
   },
 
+  updateMainHeight() {
+    let query = wx.createSelectorQuery().in(this);
+    query.select('#header').boundingClientRect();
+    query.select('#footer').boundingClientRect();
+    query.exec((res) => {
+      this.data.headerHeight = res[0].height;
+      this.data.footerHeight = res[1].height;
+      this.setData({
+        mainHeight: this.data.windowHeight - this.data.headerHeight - this.data.footerHeight
+      })
+    })
+  },
+
   input(e) {
     this.setData({
       input: e.detail.value
     })
+    this.updateMainHeight()
   },
 
   toScrollBottom() {
