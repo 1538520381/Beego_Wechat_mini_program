@@ -1,6 +1,6 @@
 <view class="personalCenter">
   <view class="header">
-    <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image>
+    <!-- <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image> -->
     <view class="title">个人中心</view>
   </view>
   <view class="main">

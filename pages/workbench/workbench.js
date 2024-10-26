@@ -483,15 +483,6 @@ Page({
     })
   },
 
-  toPersonalCenter() {
-    wx.navigateTo({
-      url: '../personalCenter/personalCenter',
-    })
-    // wx.redirectTo({
-    //   url: '../personalCenter/personalCenter',
-    // })
-  },
-
   updateMainHeight() {
     let query = wx.createSelectorQuery().in(this);
     query.select('#header').boundingClientRect();
