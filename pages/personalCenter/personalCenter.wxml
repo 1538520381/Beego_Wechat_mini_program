@@ -5,9 +5,15 @@
   </view>
   <view class="main">
     <image class="userAvatar" src="{{user.avatarUrl}}"></image>
+    <button class="uploadAvatar" bind:tap="userUploadImage">上传头像</button>
     <view class="item">
       <view class="key">昵称</view>
       <view class="value">{{user.userName}}</view>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">性别</view>
+      <view class="value">{{user.gender === 0 ? '男' : '女'}}</view>
     </view>
     <view class="divLine"></view>
     <view class="item">

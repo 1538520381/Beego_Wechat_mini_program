@@ -64,7 +64,7 @@
           </view>
           <towxml class="userMessage" nodes="{{item.content}}" v-if="{{item.content !== null}}"></towxml>
         </view>
-        <image class="userAvatar" src="../../assets/pictures/test.jpg"></image>
+        <image class="userAvatar" src="{{user.avatar}}"></image>
       </view>
     </view>
     <view class="row" id="bottomRow">

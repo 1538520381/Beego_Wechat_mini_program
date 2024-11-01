@@ -329,6 +329,7 @@ page {
   padding: 2px 5px 2px 5px;
 
   width: calc(100% - 5px * 2);
+  height: 18px;
   max-height: 90px;
 
   font-size: 14px;

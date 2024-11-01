@@ -21,7 +21,7 @@
   <view id="header" class="header">
     <image class="menuIcon" src="../../assets/pictures/menu.png" bind:tap="openMenu"></image>
     <view class="title">工作台</view>
-    <image class="userAvatar" src="../../assets/pictures/test.jpg"></image>
+    <image class="userAvatar" src="{{user.avatar}}"></image>
   </view>
 
   <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y>
@@ -49,7 +49,7 @@
           </view>
           <towxml class="userMessage" nodes="{{item.content}}" v-if="{{item.content !== null}}"></towxml>
         </view>
-        <image class="userAvatar" src="../../assets/pictures/test.jpg"></image>
+        <image class="userAvatar" src="{{user.avatar}}"></image>
       </view>
     </view>
     <view class="row" id="bottomRow">

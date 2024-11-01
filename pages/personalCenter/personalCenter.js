@@ -6,6 +6,8 @@ const {
   getUserByToken
 } = require("../../apis/user")
 
+const CONFIG = require('../../config')
+
 Page({
 
   /**
@@ -79,6 +81,7 @@ Page({
             id: res.data.data["user_id"],
             avatarUrl: isEmpty(res.data.data["avatar_url"]) ? '../../assets/pictures/test.jpg' : res.data.data["avatar_url"],
             userName: res.data.data["user_name"],
+            gender: res.data.data["gender"],
             school: res.data.data["school"],
             major: res.data.data["major"],
             enterTime: res.data.data["enter_time"]
@@ -103,7 +106,44 @@ Page({
     })
   },
 
-  back() {
-    wx.navigateBack()
-  }
+  uploadFile(file, type) {
+    let _this = this
+    wx.uploadFile({
+      url: CONFIG.baseUrl + '/user/avatar?bucketType=3',
+      method: "POST",
+      header: {
+        'Authorization': wx.getStorageSync('token')
+      },
+      filePath: type === 0 ? file[0].tempFilePath : file[0].path,
+      name: 'file',
+      success(res) {
+        res.data = JSON.parse(res.data)
+        if (res.data.code === 200) {
+          console.log(1)
+          _this.getUserByToken()
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            duration: 1000,
+            icon: 'error',
+            mask: true
+          })
+        }
+      },
+      fail(err) {
+        console.log(err)
+      }
+    })
+  },
+  userUploadImage() {
+    let _this = this
+
+    wx.chooseMedia({
+      count: 1,
+      success(res) {
+        const file = res.tempFiles
+        _this.uploadFile(file, 0)
+      },
+    })
+  },
 })

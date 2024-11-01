@@ -2,6 +2,10 @@ const app = getApp()
 
 const CONFIG = require('../../config')
 
+const {
+  getUserByToken
+} = require("../../apis/user")
+
 import TextDecoder from '../../miniprogram/miniprogram-text-decoder'
 
 const {
@@ -23,6 +27,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    user: {},
+
     robots: [],
     sessions: [],
     messages: [],
@@ -56,6 +62,8 @@ Page({
    */
   async onLoad(options) {
     let _this = this
+
+    await this.getUserByToken()
 
     wx.getSystemInfo({
       success: function (res) {
@@ -117,6 +125,38 @@ Page({
 
   },
 
+  getUserByToken() {
+    return getUserByToken().then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          user: {
+            id: res.data.data["user_id"],
+            avatar: isEmpty(res.data.data["avatar_url"]) ? '../../assets/pictures/test.jpg' : res.data.data["avatar_url"],
+            userName: res.data.data["user_name"],
+            gender: res.data.data["gender"],
+            school: res.data.data["school"],
+            major: res.data.data["major"],
+            enterTime: res.data.data["enter_time"]
+          }
+        })
+      } else {
+        wx.showToast({
+          title: res.data.message,
+          duration: 1000,
+          icon: 'error',
+          mask: true
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+      wx.showToast({
+        title: "系统异常，请联系管理员",
+        duration: 1000,
+        icon: 'error',
+        mask: true
+      })
+    })
+  },
   addSession() {
     addSession(this.data.robots[this.data.robotActive].id).then((res) => {
       if (res.data.code === 200) {
