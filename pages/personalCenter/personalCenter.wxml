@@ -32,4 +32,5 @@
     </view>
     <view class="divLine"></view>
   </view>
+  <button class="updateInformationButton" bind:tap="updateInformation">修改信息</button>
 </view>

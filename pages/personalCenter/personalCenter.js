@@ -146,4 +146,9 @@ Page({
       },
     })
   },
+  updateInformation(){
+    wx.redirectTo({
+      url: '/pages/modifyInformation/modifyInformation',
+    })
+  },
 })

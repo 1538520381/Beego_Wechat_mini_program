@@ -1,0 +1,71 @@
+<wxs module="utils" src='./modifyInformation.wxs'></wxs>
+
+<view class="personalInformation">
+  <view class="header">
+    <view class="leftHeader">
+      <view class="title">个人信息修改</view>
+    </view>
+    <view class="rightHeader">
+      <view class="button" bind:tap="cancel">
+        <image class="confirmIcon" src="../../assets/pictures/fork1.png"></image>
+        <view class="confirmText">取消</view>
+      </view>
+      <view class="button" bind:tap="confirm">
+        <image class="confirmIcon" src="../../assets/pictures/confirm.png"></image>
+        <view class="confirmText">确定</view>
+      </view>
+    </view>
+  </view>
+  <view class="main">
+    <view class="item">
+      <view class="key">昵称</view>
+      <input class="value" value="{{user.userName}}" bindinput="userNameInput" placeholder="请输入昵称"></input>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">性别</view>
+      <radio-group class="value" bindchange="genderChange">
+        <radio color="red" value="0" checked="{{user.gender === '0'}}">男</radio>
+        <text decode='true'>&nbsp;&nbsp;</text>
+        <radio color="red" value="1" checked="{{user.gender === '1'}}">女</radio>
+      </radio-group>
+    </view>
+    <view class="divLine"></view>
+    <view class="item">
+      <view class="key">所在学校</view>
+      <picker class="value" bindchange="selectSchool" value="{{user.school}}" range="{{schools}}">
+        <view wx:if="{{utils.isEmpty(user.school)}}" class="placeholder">
+          请选择所在学校
+        </view>
+        <view wx:else>
+          {{user.school}}
+        </view>
+      </picker>
+    </view>
+    <view class="divLine"></view>
+    <view class="item" wx:if="{{!utils.isEmpty(user.school)}}">
+      <view class="key">所在专业</view>
+      <picker class="value" bindchange="selectMajor" value="{{user.major}}" range="{{majors}}">
+        <view wx:if="{{utils.isEmpty(user.major)}}" class="placeholder">
+          请选择所在专业
+        </view>
+        <view wx:else>
+          {{user.major}}
+        </view>
+      </picker>
+    </view>
+    <view class="divLine" wx:if="{{!utils.isEmpty(user.school)}}"></view>
+    <view class="item">
+      <view class="key">入学年份</view>
+      <picker class="value" mode="date" header-text="选择时间" fields="year" value="{{user.enterTime}}" bindchange="selectEnterYear">
+        <view wx:if="{{utils.isEmpty(user.enterTime)}}" class="placeholder">
+          请选择入学年份
+        </view>
+        <view wx:else>
+          {{user.enterTime}}
+        </view>
+      </picker>
+    </view>
+    <view class="divLine"></view>
+  </view>
+</view>

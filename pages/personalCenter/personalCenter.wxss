@@ -110,3 +110,12 @@ page {
 
   background: #E0E3DA;
 }
+
+.personalCenter .updateInformationButton{
+  margin: 5px 0 0 10px;
+
+  width: 120px;
+  height: 30px;
+
+  font-size: 15px;
+}

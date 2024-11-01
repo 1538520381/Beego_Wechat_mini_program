@@ -34,8 +34,23 @@ const improvePersonalInformation = (userName, gender, school, major, enterTime) 
   })
 }
 
+const modifyInformation = (userName, gender, school, major, enterTime) => {
+  return request({
+    url: '/user/update',
+    method: 'POST',
+    data: {
+      user_name: userName,
+      gender: gender,
+      school: school,
+      major: major,
+      enter_time: enterTime
+    }
+  })
+}
+
 module.exports = {
   login,
   getUserByToken,
-  improvePersonalInformation
+  improvePersonalInformation,
+  modifyInformation
 }
