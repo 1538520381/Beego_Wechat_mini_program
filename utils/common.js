@@ -3,7 +3,7 @@ const sleep = (delay) => {
 }
 
 const isEmpty = (field) => {
-  return field === "" || field === null || field === undefined || field === {} || field === []
+  return field === "" || field === null || field === undefined || JSON.stringify(field) === '{}' || JSON.stringify(field) === '[]'
 }
 
 module.exports = {

@@ -24,6 +24,13 @@ const getRobotList = () => {
   })
 }
 
+const getLearningCornerRobotList = () => {
+  return request({
+    url: '/bot/list/coStudy',
+    method: 'POST'
+  })
+}
+
 const getSessionList = (botId) => {
   return request({
     url: `/session/retrieve?bot_id=${botId}`,
@@ -42,14 +49,16 @@ const getMessageList = (sessionId) => {
   })
 }
 
-const chat = (botId, sessionId, content, fileType, fileName, fileUrl) => {
+const chat = (botId, sessionId,handle, content, fileType, fileName, fileUrl) => {
   return requestStream({
     url: '/chat/agent',
     method: 'POST',
     data: {
       bot_id: botId,
       session_id: sessionId,
+      bot_handle: handle,
       content: content,
+      bot_handle: 0,
       file_type: fileType,
       file_name: fileName,
       file_url: fileUrl,
@@ -61,6 +70,7 @@ module.exports = {
   addSession,
   deleteSession,
   getRobotList,
+  getLearningCornerRobotList,
   getSessionList,
   getMessageList,
   chat,

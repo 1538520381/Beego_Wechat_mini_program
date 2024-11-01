@@ -1,6 +1,7 @@
 {
+  "component": true,
   "usingComponents": {
-    "tree": "/components/tree/tree",
+    "c-tree": "/components/tree/tree",
     "towxml": "/towxml/towxml"
   }
 }

@@ -1,0 +1,14 @@
+var utils = {
+  indexOf: function (array, item) {
+    return array.indexOf(item)
+  },
+
+  isEmpty: function (field) {
+    return field === "" || field === null || field === undefined || JSON.stringify(field) === '{}' || JSON.stringify(field) === '[]'
+  }
+}
+
+module.exports = {
+  indexOf: utils.indexOf,
+  isEmpty: utils.isEmpty
+}

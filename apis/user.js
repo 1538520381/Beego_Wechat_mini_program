@@ -2,11 +2,12 @@ import {
   request
 } from '../utils/request'
 
-const login = (code) => {
+const login = (phoneCode, code) => {
   return request({
-    url: '/login',
+    url: '/wechat/user/login',
     method: 'POST',
     data: {
+      phone_code: phoneCode,
       code: code
     }
   })
@@ -19,12 +20,13 @@ const getUserByToken = () => {
   })
 }
 
-const improvePersonalInformation = (userName, school, major, enterTime) => {
+const improvePersonalInformation = (userName, gender, school, major, enterTime) => {
   return request({
     url: '/user/mustInfo',
     method: 'POST',
     data: {
       user_name: userName,
+      gender: gender,
       school: school,
       major: major,
       enter_time: enterTime

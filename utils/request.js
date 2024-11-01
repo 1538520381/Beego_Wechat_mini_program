@@ -5,7 +5,7 @@ export const request = (params) => {
     wx.request({
       url: `${CONFIG.baseUrl}${params.url}`,
       header: {
-        'Authorization': CONFIG.token
+        'Authorization': wx.getStorageSync('token')
       },
       method: params.method,
       data: params.data,
@@ -24,7 +24,7 @@ export const requestStream = (params) => {
     url: `${CONFIG.baseUrl}${params.url}`,
     enableChunked: true,
     header: {
-      'Authorization': CONFIG.token
+      'Authorization': wx.getStorageSync('token')
     },
     method: params.method,
     data: params.data,

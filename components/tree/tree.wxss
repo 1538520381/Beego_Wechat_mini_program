@@ -1,0 +1,53 @@
+.tree {
+  width: 100%;
+
+  text-align: left;
+}
+
+.tree-item {
+  display: flex;
+
+  width: 100%;
+}
+
+.tree-item-onOff {
+  padding: 0 0 0 5px;
+
+  width: 10px;
+}
+
+.tree-item-onOff image {
+  margin: 10px 0 0 0;
+
+  width: 9px;
+  height: 5px;
+
+  transition: 0.4s;
+}
+
+.tree-item-onOff-closed {
+  transform: rotate(-90deg);
+}
+
+.tree-item-onOff-open {
+  transform: rotate(0deg);
+}
+
+.tree-item-name {
+  width: calc(100% - 10px);
+}
+
+.name {
+  width: calc(100% - 50px);
+
+  font-size: 12px;
+}
+
+.tree-item-name-select {
+  background: #ECF7FA;
+  color: #0079FE;
+}
+
+.tree-item-name-select2 {
+  color: #0079FE;
+}

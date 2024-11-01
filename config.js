@@ -1,4 +1,3 @@
 module.exports = {
   baseUrl: 'http://54.222.173.61:8081',
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsidXNlcklkIjo0LCJlbWFpbCI6IjE1Mzg1MjAzODFAcXEuY29tIiwidXNlck5hbWUiOiJQZXJzb2x1dGUxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEiLCJ0b2tlbiI6bnVsbH0sImV4cCI6MTczMjM0MjE4M30.oUY12pj4gyqpP_k7HeJA01TwZ9Mh98ssCRqAE_ItF_I'
 }

@@ -1,4 +1,8 @@
 const {
+  schoolCategoryMajor
+} = require("../../utils/constant")
+
+const {
   isEmpty
 } = require("../../utils/common")
 
@@ -13,14 +17,20 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user: {}
+    schools: [],
+    categorys: [],
+    majors: [],
+
+    user: {
+      gender: 0
+    },
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.initConstant()
   },
 
   /**
@@ -72,6 +82,12 @@ Page({
 
   },
 
+  initConstant() {
+    this.setData({
+      schools: Object.keys(schoolCategoryMajor)
+    })
+  },
+
   confirm() {
     if (isEmpty(this.data.user.userName)) {
       wx.showToast({
@@ -100,10 +116,9 @@ Page({
         duration: 1000,
         icon: 'none',
         mask: true,
-
       })
     } else {
-      improvePersonalInformation(this.data.user.userName, this.data.user.school, this.data.user.major, this.data.user.enterTime).then((res) => {
+      improvePersonalInformation(this.data.user.userName, this.data.user.gender, this.data.user.school, this.data.user.major, this.data.user.enterTime).then((res) => {
         if (res.data.code === 200) {
           this.toWorkbench()
         } else {
@@ -127,8 +142,8 @@ Page({
   },
 
   toWorkbench() {
-    wx.redirectTo({
-      url: '../workbench/workbench',
+    wx.switchTab({
+      url: '/pages/workbench/workbench'
     })
   },
 
@@ -139,11 +154,35 @@ Page({
       user: user
     })
   },
-  schoolInput(e) {
+  genderChange(e) {
+    this.data.user.gender = e.detail.value
+  },
+  selectSchool(e) {
     let user = this.data.user
-    user.school = e.detail.value
+    user.school = this.data.schools[e.detail.value]
+    user.major = null
+
+    this.data.categorys = Object.keys(schoolCategoryMajor[user.school])
+    let majors = []
+    console.log(this.data.categorys)
+    for (let i in this.data.categorys) {
+      let categoryMajors = schoolCategoryMajor[user.school][this.data.categorys[i]]
+      for (let j in categoryMajors) {
+        majors.push(categoryMajors[j])
+      }
+    }
+
     this.setData({
-      user: user
+      user: user,
+      majors: majors
+    })
+  },
+  selectMajor(e) {
+    let user = this.data.user
+    user.major = this.data.majors[e.detail.value]
+
+    this.setData({
+      user: user,
     })
   },
   majorInput(e) {
@@ -153,11 +192,12 @@ Page({
       user: user
     })
   },
-  enterTimeInput(e) {
+  selectEnterYear(e) {
     let user = this.data.user
     user.enterTime = e.detail.value
+
     this.setData({
-      user: user
+      user: user,
     })
-  },
+  }
 })

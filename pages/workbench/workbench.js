@@ -171,6 +171,7 @@ Page({
             avatar: res.data.data[i]['bot_avatar'],
             name: res.data.data[i]['bot_name'],
             description: res.data.data[i]['description'],
+            handle: res.data.data[i]['bot_handle'],
             sort: res.data.data[i]['sort']
           })
         }
@@ -263,6 +264,10 @@ Page({
         }
 
         let messages = []
+        messages.push({
+          role: 'assistant',
+          content: app.towxml(this.data.robots[this.data.robotActive].description, 'markdown')
+        })
         for (let i in res.data.data) {
           messages.push({
             id: res.data.data[i]['message_id'],
@@ -303,6 +308,7 @@ Page({
       this.data.requestStream = chat(
         this.data.robots[this.data.robotActive].id,
         this.data.sessions[this.data.sessionActive].id,
+        this.data.robots[this.data.robotActive].handle,
         this.data.input,
         isEmpty(this.data.file) ? null : this.data.file.fileType,
         isEmpty(this.data.file) ? null : this.data.file.fileName,
@@ -387,20 +393,14 @@ Page({
       });
     }
   },
-  unit8ArrayToString(fileData) {
-    let string = "";
-    for (let i = 0; i < fileData.length; i++) {
-      string += String.fromCharCode(fileData[i])
-    }
-    return string
-  },
+
   uploadFile(file, type) {
     let _this = this
     wx.uploadFile({
       url: CONFIG.baseUrl + '/file/uploadPicture?bucketType=1',
       method: "POST",
       header: {
-        'Authorization': CONFIG.token
+        'Authorization': wx.getStorageSync('token')
       },
       filePath: type === 0 ? file[0].tempFilePath : file[0].path,
       name: 'file',

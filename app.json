@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/learningCorner/learningCorner",
+    "pages/home/home",
     "pages/workbench/workbench",
     "pages/personalCenter/personalCenter",
-    "pages/personalInformation/personalInformation",
-    "pages/learningCorner/learningCorner"
+    "pages/personalInformation/personalInformation"
   ],
   "window": {
     "navigationBarTextStyle": "black",

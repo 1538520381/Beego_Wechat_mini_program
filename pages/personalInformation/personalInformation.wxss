@@ -103,6 +103,10 @@ page {
   line-height: 50px;
 }
 
+.personalInformation .main .item .value .placeholder{
+  color: #808080;
+}
+
 .personalInformation .main .divLine {
   margin: 0 0 0 2%;
 
