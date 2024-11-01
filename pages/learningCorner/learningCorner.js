@@ -20,7 +20,8 @@ const {
   getLearningCornerRobotList,
   getSessionList,
   getMessageList,
-  chat
+  chat,
+  deleteSession
 } = require("../../apis/chat")
 
 const {
@@ -67,7 +68,7 @@ Page({
     let _this = this
 
     await this.getUserByToken()
-    
+
     wx.getSystemInfo({
       success: function (res) {
         _this.data.windowHeight = res.windowHeight
@@ -186,6 +187,29 @@ Page({
         title: "系统异常，请联系管理员",
         duration: 1000,
         icon: 'error',
+        mask: true
+      })
+    })
+  },
+
+  removeSession() {
+    deleteSession(this.data.session.id).then((res) => {
+      if (res.data.code === 200) {
+        this.getSessionList()
+      } else {
+        wx.showToast({
+          title: res.data.message,
+          duration: 1000,
+          icon: 'none',
+          mask: true
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+      wx.showToast({
+        title: "系统异常，请联系管理员",
+        duration: 1000,
+        icon: 'none',
         mask: true
       })
     })

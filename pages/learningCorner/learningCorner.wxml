@@ -77,9 +77,10 @@
   </scroll-view>
 
   <view id="footer" class="footer" wx:if="{{robotFlag}}">
-    <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
-    <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
-    <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+    <image class="scrollToBottomButton" src="/assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
+    <image class="smallButton" src="/assets/pictures/photo.png" bind:tap="userUploadImage"></image>
+    <image class="smallButton" src="/assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+    <image class="smallButton" src="/assets/pictures/clear.png" bind:tap="removeSession"></image>
     <view class="inputArea">
       <view class="fileContainer" wx:if="{{file != null}}">
         <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
