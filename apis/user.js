@@ -13,6 +13,13 @@ const login = (phoneCode, code) => {
   })
 }
 
+const logout = () => {
+  return request({
+    url: '/user/logout',
+    method: 'POST'
+  })
+}
+
 const getUserByToken = () => {
   return request({
     url: '/user/token',
@@ -48,9 +55,25 @@ const modifyInformation = (userName, gender, school, major, enterTime) => {
   })
 }
 
+const feedback = (content, fileId, fileName, fileUrl, fileType) => {
+  return request({
+    url: '/feedback/save',
+    method: 'POST',
+    data: {
+      feedback_content: content,
+      file_id: fileId,
+      file_name: fileName,
+      file_url: fileUrl,
+      file_type: fileType
+    }
+  })
+}
+
 module.exports = {
   login,
+  logout,
   getUserByToken,
   improvePersonalInformation,
-  modifyInformation
+  modifyInformation,
+  feedback
 }

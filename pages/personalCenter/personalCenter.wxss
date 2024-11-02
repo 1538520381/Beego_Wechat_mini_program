@@ -61,7 +61,7 @@ page {
   border-radius: 50%;
 }
 
-.personalCenter .main .uploadAvatar{
+.personalCenter .main .uploadAvatar {
   margin: 10px auto 0 auto;
   padding: 0 0 0 0;
 
@@ -82,6 +82,7 @@ page {
 
 .personalCenter .main .item .key {
   display: inline-block;
+  vertical-align: top;
 
   margin: 0 0 0 20px;
 
@@ -94,12 +95,21 @@ page {
 
 .personalCenter .main .item .value {
   display: inline-block;
+  vertical-align: top;
 
   margin: 0 0 0 20px;
+
+  width: calc(100% - 20px - 100px - 20px);
 
   font-size: 20px;
 
   line-height: 50px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .personalCenter .main .divLine {
@@ -111,11 +121,110 @@ page {
   background: #E0E3DA;
 }
 
-.personalCenter .updateInformationButton{
-  margin: 5px 0 0 10px;
+.personalCenter .button {
+  display: inline-block;
 
-  width: 120px;
+  margin: 5px 0 0 5px;
+  padding: 0 0 0 0;
+
+  width: 100px;
+  max-width: calc((100% - 5px * 4) / 3);
   height: 30px;
 
   font-size: 15px;
+
+  line-height: 30px;
+}
+
+.personalCenter .modal-mask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.personalCenter .modal-mask .modal-dialog {
+  padding: 10px 5px 10px 5px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: fixed;
+  margin: 0 auto;
+  z-index: 9999;
+  background: #f9f9f9;
+  border-radius: 36rpx;
+}
+
+.personalCenter .modal-mask .modal-dialog .title {
+  margin: 5px 0 0 10px;
+
+  width: calc(100% - 10px);
+  height: 30px;
+
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.personalCenter .modal-mask .modal-dialog .input {
+  margin: 10px 0 0 0;
+  padding: 5px 5px 5px 5px;
+
+  width: 80%;
+  height: 18px;
+  max-height: 100px;
+
+  border: 1px solid #000000;
+  border-radius: 10px;
+}
+
+.personalCenter .modal-mask .modal-dialog .button {
+  margin: 10px auto 0 10px;
+
+  background-color: #E8E8E8;
+}
+
+.personalCenter .modal-mask .modal-dialog .fileContainer {
+  display: inline-block;
+
+  position: relative;
+
+  padding: 0 2px 2px 2px;
+  margin: 5px auto 0 10px;
+}
+
+.personalCenter .modal-mask .modal-dialog .fileContainer .removeFile {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background-color: #C9C9C9;
+}
+
+.personalCenter .modal-mask .modal-dialog .fileContainer .file {
+  max-width: 100px;
+  height: 50px;
+}
+
+.personalCenter .modal-mask .modal-dialog .footer {
+  width: 100%;
+
+  text-align: right;
+}
+
+.personalCenter .modal-mask .modal-dialog .footer .button{
+  margin: 5px 10px 0 0;
 }

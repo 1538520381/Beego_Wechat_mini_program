@@ -192,6 +192,9 @@ Page({
       },
     })
   },
+  login1(){
+    this.getUserByToken()
+  },
 
   createChatClock1() {
     this.data.chatClock = setInterval(async () => {
