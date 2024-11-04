@@ -1,3 +1,5 @@
+<wxs module="utils" src='./personalCenter.wxs'></wxs>
+
 <view class="personalCenter">
   <view class="header">
     <!-- <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image> -->
@@ -41,9 +43,9 @@
       <view class="title">意见反馈</view>
       <textarea class="input" value="{{input}}" bindinput="input" placeholder="请描述您遇到的问题" auto-height maxlength="-1"></textarea>
       <button class="button" bind:tap="userUploadFile">附件上传</button>
-      <view class="fileContainer" wx:if="{{file != null}}">
+      <view class="fileContainer" wx:if="{{!utils.isEmpty(file)}}">
         <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
-        <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}"></image>
+        <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}" bind:tap="downloadFileOpen" data-url="{{file.fileUrl}}"></image>
         <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{file.fileType === 'csv'}}"></image>
         <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{file.fileType === 'xlsx' || file.fileType === 'xls'}}"></image>
         <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{file.fileType === 'mp4'}}"></image>
