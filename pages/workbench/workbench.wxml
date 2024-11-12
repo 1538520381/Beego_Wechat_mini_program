@@ -66,6 +66,9 @@
     <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
     <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
     <view class="inputArea">
+      <view class="prompts">
+        <button class="prompt" wx:for="{{robots[robotActive].prompts}}" bind:tap="promptChat" data-input="{{item}}">{{item}}</button>
+      </view>
       <view class="fileContainer" wx:if="{{file != null}}">
         <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
         <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}"></image>

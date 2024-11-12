@@ -180,7 +180,9 @@ Page({
               })
             }
           }).catch((err) => {
-            console.log(err)
+            this.setData({
+              error: JSON.stringify(err)
+            })
             wx.showToast({
               title: "系统异常，请联系管理员",
               duration: 1000,

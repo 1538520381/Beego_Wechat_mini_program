@@ -212,7 +212,8 @@ Page({
             name: res.data.data[i]['bot_name'],
             description: res.data.data[i]['description'],
             handle: res.data.data[i]['bot_handle'],
-            sort: res.data.data[i]['sort']
+            sort: res.data.data[i]['sort'],
+            prompts: res.data.data[i]["prompts"]
           })
         }
         robots.sort((o1, o2) => {
@@ -433,6 +434,95 @@ Page({
       });
     }
   },
+  promptChat(data) {
+    this.setData({
+      input:data.currentTarget.dataset["input"]
+    })
+    this.updateMainHeight()
+    // if (!this.data.loadingFlag) {
+    //   this.data.requestStream = chat(
+    //     this.data.robots[this.data.robotActive].id,
+    //     this.data.sessions[this.data.sessionActive].id,
+    //     this.data.robots[this.data.robotActive].handle,
+    //     data.currentTarget.dataset["input"],
+    //     null,
+    //     null,
+    //     null
+    //   );
+
+    //   let messages = this.data.messages
+    //   messages.push({
+    //     role: 'user',
+    //     content: app.towxml(data.currentTarget.dataset["input"], 'markdown')
+    //   })
+    //   this.setData({
+    //     messages: messages,
+    //     loadingFlag: true,
+    //     loadingMessage: '',
+    //     loadingMessageMarkdown: {}
+    //   })
+    //   this.updateMainHeight()
+    //   this.toScrollBottom()
+
+    //   this.data.dataFlag = false
+
+    //   this.data.requestStream.onChunkReceived(res => {
+    //     console.log(res.data)
+    //     if (this.data.loadingFlag) {
+
+    //       let strs = []
+    //       try {
+    //         const arrayBuffer = new Uint8Array(res.data)
+    //         let str = new TextDecoder().decode(arrayBuffer)
+    //         strs = str.split("\n")
+    //       } catch (e) {
+    //         wx.showToast({
+    //           title: "系统异常，请联系管理员",
+    //           duration: 1000,
+    //           icon: 'none',
+    //           mask: true
+    //         })
+    //         console.log(e)
+    //       }
+
+    //       console.log(strs)
+    //       for (let i in strs) {
+    //         if (strs[i].startsWith("event:all")) {
+    //           this.data.dataFlag = true
+    //         } else if (strs[i].startsWith("event:done")) {
+    //           let messages = this.data.messages
+    //           messages.push({
+    //             role: 'assistant',
+    //             content: app.towxml(this.data.loadingMessage.replace(/\\n/g, "\n"), 'markdown')
+    //           })
+    //           this.setData({
+    //             messages: messages,
+    //             loadingMessage: "",
+    //             loadingFlag: false,
+    //           })
+    //         } else if (strs[i].startsWith("event:")) {
+
+    //         } else if (strs[i].startsWith("data:")) {
+    //           if (!this.data.dataFlag) {
+    //             this.data.loadingMessage += strs[i].substring(5)
+    //           } else {
+    //             this.data.loadingMessage = strs[i].substring(5)
+    //             this.data.dataFlag = false
+    //           }
+    //           this.setData({
+    //             loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
+    //           })
+    //         } else {
+    //           this.data.loadingMessage += strs[i]
+    //           this.setData({
+    //             loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
+    //           })
+    //         }
+    //       }
+    //     }
+    //   });
+    // }
+  },
 
   uploadFile(file, type) {
     let _this = this
@@ -547,5 +637,5 @@ Page({
     this.setData({
       toView: 'bottomRow'
     })
-  }
+  },
 })
