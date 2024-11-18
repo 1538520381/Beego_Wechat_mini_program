@@ -3,12 +3,12 @@ module.exports = {
 
     // 数学公式解析API
     latex: {
-        api: 'http://192.168.103.40:8001/?tex'
+        api: 'https://latex-128151-8-1331511268.sh.run.tcloudbase.com/?tex'
     },
 
     // yuml图解析APPI
     yuml: {
-        api: 'http://192.168.103.40:8001/?yuml'
+        api: 'https://latex-128151-8-1331511268.sh.run.tcloudbase.com/?yuml'
     },
 
     // markdown解析配置，保留需要的选项即可

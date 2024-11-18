@@ -266,7 +266,7 @@ page {
   z-index: 0;
 }
 
-.workbench .footer .scrollToBottomButton{
+.workbench .footer .scrollToBottomButton {
   position: absolute;
 
   left: calc(50% - 30px / 2 - 2px / 2);
@@ -298,7 +298,7 @@ page {
   width: calc(100% - 6px * 2 - 24px * 2 - 50px - 5px * 2 - 10px * 2);
 }
 
-.workbench .footer .inputArea .prompts .prompt{
+.workbench .footer .inputArea .prompts .prompt {
   font-size: 10px;
 
   overflow: hidden;
@@ -366,4 +366,77 @@ page {
   color: #ffffff;
 
   background-color: #409EFF;
+}
+
+.workbench .mathematicalModel {
+  width: 100%;
+
+  text-align: center;
+}
+
+.workbench .mathematicalModel .pictureUploadButton {
+  margin: 10px auto 0 auto;
+}
+
+.workbench .mathematicalModel .file {
+  margin: 10px auto 0 auto;
+
+  max-width: 80%;
+  height: 50px;
+}
+
+.workbench .mathematicalModel .imageAnalyzeButton {
+  margin: 10px auto 0 auto;
+}
+
+.workbench .mathematicalModel .input {
+  margin: 10px auto 0 auto;
+  padding: 5px 5px 5px 5px;
+
+  width: 80%;
+  height: 18px;
+  max-height: 80px;
+
+  border: 1px solid black;
+  border-radius: 5px;
+
+  text-align: left;
+}
+
+.workbench .mathematicalModel .robotRow {
+  width: 100%;
+
+  text-align: left;
+}
+
+.workbench .mathematicalModel .robotRow .robotAvatar {
+  display: inline-block;
+
+  vertical-align: top;
+
+  margin: 5px 0 0 5px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+}
+
+.workbench .mathematicalModel .robotRow .robotMessage {
+  display: inline-block;
+
+  max-width: calc(90% - 5px - 32px - 10px);
+
+  font-size: 16px;
+}
+
+.workbench .mathematicalModel .robotRow .openWebviewButton{
+  display: inline-block;
+  vertical-align: top;
+
+  margin: 10px 0 0 5px;
+
+  width: calc(100% - 5px - 32px - 5px - 20px);
+
+  font-size: 14px;
 }

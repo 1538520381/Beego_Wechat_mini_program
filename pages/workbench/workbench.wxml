@@ -24,7 +24,7 @@
     <image class="userAvatar" src="{{user.avatar}}"></image>
   </view>
 
-  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y>
+  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 0}}">
     <view class="row" wx:for="{{messages}}" wx:key="index">
       <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
         <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
@@ -61,7 +61,7 @@
     </view>
   </scroll-view>
 
-  <view id="footer" class="footer">
+  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 0}}">
     <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
     <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
     <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
@@ -87,4 +87,28 @@
     </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
   </view>
+
+  <scroll-view class="mathematicalModel" wx:if="{{robots[robotActive].handle === 1}}">
+    <button class="pictureUploadButton" bind:tap="userUploadImage">图片上传</button>
+    <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}"></image>
+    <button class="imageAnalyzeButton" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}" bind:tap="imageAnalyze">开始分析</button>
+    <towxml class="questionMarkdown" nodes="{{questionMarkdown}}"></towxml>
+    <textarea class="input" value="{{input}}" bindinput="inputQuestion" auto-height maxlength="-1"></textarea>
+    <button class="pictureUploadButton" bind:tap="sendQuestion">发送题目</button>
+    <view class="robotRow">
+      <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+      <!-- <view class="robotMessage">{{item.content}}</view> -->
+      <towxml class="robotMessage" nodes="{{robots[robotActive].description}}"></towxml>
+    </view>
+    <view class="robotRow" wx:if="{{answer !== null || answerFlag}}">
+      <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+      <!-- <view class="robotMessage">{{item.content}}</view> -->
+      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 0}}">{{"题目分析中."}}</button>
+      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 1}}">{{"题目分析中.."}}</button>
+      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 2}}">{{"题目分析中..."}}</button>
+      <button class="openWebviewButton" wx:if="{{!answerFlag}}" bind:tap="openWebview">题目解析生成完毕，点击查看详情</button>
+    </view>
+    <web-view wx:if="{{webViewFlag !== 0}}" src="{{'https://7072-prod-7ghr1n1r9680b968-1331511268.tcb.qcloud.la/latex/index.html?text=' + answer}}" bindload="loadSuccess">
+    </web-view>
+  </scroll-view>
 </view>

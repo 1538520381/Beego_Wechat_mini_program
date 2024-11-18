@@ -55,6 +55,14 @@ Page({
     footerHeight: 0,
 
     toView: 'bottomRow',
+
+    questionMarkdown: null,
+    answer: null,
+    answerFlag: false,
+    webViewFlag: 0,
+
+    clock: null,
+    timestamp: 0,
   },
 
   /**
@@ -72,6 +80,12 @@ Page({
     })
 
     await this.getRobotList()
+
+    this.clock = setInterval(() => {
+      this.setData({
+        timestamp: this.data.timestamp + 1
+      })
+    }, 500)
 
     this.updateMainHeight()
   },
@@ -210,7 +224,7 @@ Page({
             id: res.data.data[i]['bot_id'],
             avatar: res.data.data[i]['bot_avatar'],
             name: res.data.data[i]['bot_name'],
-            description: res.data.data[i]['description'],
+            description: app.towxml(res.data.data[i]['description'], 'markdown'),
             handle: res.data.data[i]['bot_handle'],
             sort: res.data.data[i]['sort'],
             prompts: res.data.data[i]["prompts"]
@@ -307,7 +321,7 @@ Page({
         let messages = []
         messages.push({
           role: 'assistant',
-          content: app.towxml(this.data.robots[this.data.robotActive].description, 'markdown')
+          content: this.data.robots[this.data.robotActive].description
         })
         for (let i in res.data.data) {
           messages.push({
@@ -436,7 +450,7 @@ Page({
   },
   promptChat(data) {
     this.setData({
-      input:data.currentTarget.dataset["input"]
+      input: data.currentTarget.dataset["input"]
     })
     this.updateMainHeight()
     // if (!this.data.loadingFlag) {
@@ -523,11 +537,142 @@ Page({
     //   });
     // }
   },
+  imageAnalyze() {
+    if (!this.data.loadingFlag) {
+      this.data.requestStream = chat(
+        this.data.robots[this.data.robotActive].id,
+        this.data.sessions[this.data.sessionActive].id,
+        this.data.robots[this.data.robotActive].handle,
+        null,
+        isEmpty(this.data.file) ? null : this.data.file.fileType,
+        isEmpty(this.data.file) ? null : this.data.file.fileName,
+        isEmpty(this.data.file) ? null : this.data.file.fileUrl
+      );
+
+      this.data.dataFlag = false
+      this.data.loadingFlag = true
+
+      this.data.requestStream.onChunkReceived(res => {
+        if (this.data.loadingFlag) {
+          let strs = []
+          try {
+            const arrayBuffer = new Uint8Array(res.data)
+            let str = new TextDecoder().decode(arrayBuffer)
+            strs = str.split("\n")
+          } catch (e) {
+            wx.showToast({
+              title: "系统异常，请联系管理员",
+              duration: 1000,
+              icon: 'none',
+              mask: true
+            })
+            console.log(e)
+          }
+          console.log(strs)
+          for (let i in strs) {
+            if (strs[i].startsWith("event:all")) {
+              this.data.dataFlag = true
+            } else if (strs[i].startsWith("event:done")) {
+              this.setData({
+                input: this.data.loadingMessage,
+                questionMarkdown: app.towxml(this.data.loadingMessage, "markdown"),
+                loadingMessage: "",
+                loadingFlag: false,
+              })
+            } else if (strs[i].startsWith("event:")) {
+
+            } else if (strs[i].startsWith("data:")) {
+              if (!this.data.dataFlag) {
+                this.data.loadingMessage += strs[i].substring(5)
+              } else {
+                this.data.loadingMessage = strs[i].substring(5)
+                this.data.dataFlag = false
+              }
+              this.setData({
+                loadingMessageMarkdown: this.data.loadingMessage
+              })
+            } else {
+              this.data.loadingMessage += strs[i]
+              this.setData({
+                loadingMessageMarkdown: this.data.loadingMessage
+              })
+            }
+          }
+        }
+      });
+    }
+  },
+  sendQuestion() {
+    if (!this.data.loadingFlag) {
+      this.data.requestStream = chat(
+        this.data.robots[this.data.robotActive].id,
+        this.data.sessions[this.data.sessionActive].id,
+        this.data.robots[this.data.robotActive].handle,
+        this.data.input,
+        null, null, null
+      );
+
+      this.data.dataFlag = false
+      this.data.loadingFlag = true
+      this.setData({
+        answerFlag: true
+      })
+
+      this.data.requestStream.onChunkReceived(res => {
+        if (this.data.loadingFlag) {
+          let strs = []
+          try {
+            const arrayBuffer = new Uint8Array(res.data)
+            let str = new TextDecoder().decode(arrayBuffer)
+            strs = str.split("\n")
+          } catch (e) {
+            wx.showToast({
+              title: "系统异常，请联系管理员",
+              duration: 1000,
+              icon: 'none',
+              mask: true
+            })
+            console.log(e)
+          }
+          console.log(strs)
+          for (let i in strs) {
+            if (strs[i].startsWith("event:all")) {
+              this.data.dataFlag = true
+            } else if (strs[i].startsWith("event:done")) {
+              this.setData({
+                answer: this.data.loadingMessage,
+                answerFlag: false,
+                loadingMessage: "",
+                loadingFlag: false,
+              })
+            } else if (strs[i].startsWith("event:")) {
+
+            } else if (strs[i].startsWith("data:")) {
+              if (!this.data.dataFlag) {
+                this.data.loadingMessage += strs[i].substring(5)
+              } else {
+                this.data.loadingMessage = strs[i].substring(5)
+                this.data.dataFlag = false
+              }
+              this.setData({
+                loadingMessageMarkdown: this.data.loadingMessage
+              })
+            } else {
+              this.data.loadingMessage += strs[i]
+              this.setData({
+                loadingMessageMarkdown: this.data.loadingMessage
+              })
+            }
+          }
+        }
+      });
+    }
+  },
 
   uploadFile(file, type) {
     let _this = this
     wx.uploadFile({
-      url: CONFIG.baseUrl + '/file/uploadPicture?bucketType=1',
+      url: 'https://backend-128151-8-1331511268.sh.run.tcloudbase.com/file/uploadPicture?bucketType=1',
       method: "POST",
       header: {
         'Authorization': wx.getStorageSync('token')
@@ -585,7 +730,10 @@ Page({
   selectRobot(data) {
     if (data.currentTarget.dataset[""] !== this.data.robotActive) {
       this.setData({
-        robotActive: data.currentTarget.dataset[""]
+        robotActive: data.currentTarget.dataset[""],
+        file: null,
+        input: null,
+        answer: null
       })
       this.getSessionList()
     }
@@ -595,6 +743,9 @@ Page({
       this.setData({
         sessionActive: data.currentTarget.dataset[""],
         menuVis: false,
+        file: null,
+        input: null,
+        answer: null
       })
       this.getMessageList()
     }
@@ -632,10 +783,42 @@ Page({
     })
     this.updateMainHeight()
   },
+  inputQuestion(e) {
+    this.setData({
+      input: e.detail.value,
+    })
+    this.setData({
+      questionMarkdown: app.towxml(this.data.input, 'markdown')
+    })
+  },
 
   toScrollBottom() {
     this.setData({
       toView: 'bottomRow'
     })
+  },
+
+  openWebview() {
+    this.setData({
+      webViewFlag: 1
+    })
+  },
+
+  bindGetMsg(e) {
+    console.log(1)
+    console.log(e)
+    console.log(2)
+  },
+
+  loadSuccess(e) {
+    if (this.data.webViewFlag === 1) {
+      this.setData({
+        webViewFlag: 2
+      })
+    } else if (this.data.webViewFlag === 2) {
+      this.setData({
+        webViewFlag: 0
+      })
+    }
   },
 })

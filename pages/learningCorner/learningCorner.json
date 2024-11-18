@@ -2,5 +2,6 @@
   "usingComponents": {
     "tree": "/components/tree/tree",
     "towxml": "/towxml/towxml"
-  }
+  },
+  "pageOrientation": "landscape"
 }

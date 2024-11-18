@@ -58,7 +58,6 @@ const chat = (botId, sessionId,handle, content, fileType, fileName, fileUrl) => 
       session_id: sessionId,
       bot_handle: handle,
       content: content,
-      bot_handle: 0,
       file_type: fileType,
       file_name: fileName,
       file_url: fileUrl,
