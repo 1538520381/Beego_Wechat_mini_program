@@ -49,7 +49,7 @@ const getMessageList = (sessionId) => {
   })
 }
 
-const chat = (botId, sessionId,handle, content, fileType, fileName, fileUrl) => {
+const chat = (botId, sessionId, handle, content, fileType, fileName, fileUrl) => {
   return requestStream({
     url: '/chat/agent',
     method: 'POST',
@@ -65,6 +65,34 @@ const chat = (botId, sessionId,handle, content, fileType, fileName, fileUrl) => 
   })
 }
 
+const longTextDialogueSubmit = (robotId, sessionId, handle, content, fileUrl, fileName, fileType) => {
+  return request({
+    url: '/chat/workflow/submit',
+    method: 'post',
+    data: {
+      bot_id: robotId,
+      session_id: sessionId,
+      bot_handle: handle,
+      content: content,
+      file_url: fileUrl,
+      file_type: fileType,
+      file_name: fileName,
+    }
+  })
+}
+
+const longTextDialogueQuery = (robotId, sessionId, executeId) => {
+  return request({
+    url: '/chat/workflow/query',
+    method: 'post',
+    data: {
+      bot_id: robotId,
+      session_id: sessionId,
+      execute_id: executeId
+    }
+  })
+}
+
 module.exports = {
   addSession,
   deleteSession,
@@ -73,4 +101,6 @@ module.exports = {
   getSessionList,
   getMessageList,
   chat,
+  longTextDialogueSubmit,
+  longTextDialogueQuery
 }

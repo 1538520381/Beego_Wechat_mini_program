@@ -7,7 +7,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    longTextDialogueExecuteEntitys: []
   },
   towxml: require('./towxml/index')
 })

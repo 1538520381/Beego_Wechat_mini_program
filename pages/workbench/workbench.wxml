@@ -111,4 +111,70 @@
     <web-view wx:if="{{webViewFlag !== 0}}" src="{{'https://7072-prod-7ghr1n1r9680b968-1331511268.tcb.qcloud.la/latex/index.html?text=' + answer}}" bindload="loadSuccess">
     </web-view>
   </scroll-view>
+
+  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 2}}">
+    <view class="row" wx:for="{{messages}}" wx:key="index">
+      <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
+        <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+        <!-- <view class="robotMessage">{{item.content}}</view> -->
+        <towxml class="robotMessage" nodes="{{item.content}}"></towxml>
+      </view>
+      <view class="userRow" wx:if="{{item.role === 'user'}}">
+        <!-- <view class="userMessage">{{item.content}}</view> -->
+        <view class="userMessageContainer">
+          <view class="fileContainer" wx:if="{{item.fileUrl != null}}">
+            <image class="file" src="{{item.fileUrl}}" mode="heightFix" wx:if="{{item.fileType === 'jpg' || item.fileType === 'png'}}"></image>
+            <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{item.fileType === 'csv'}}"></image>
+            <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{item.fileType === 'xlsx' || item.fileType === 'xls'}}"></image>
+            <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{item.fileType === 'mp4'}}"></image>
+            <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{item.fileType === 'pdf'}}"></image>
+            <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{item.fileType === 'ppt'}}"></image>
+            <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{item.fileType === 'rar'}}"></image>
+            <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{item.fileType === 'txt'}}"></image>
+            <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{item.fileType === 'docx' || item.fileType === 'doc'}}"></image>
+            <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{item.fileType === 'zip'}}"></image>
+            <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else></image>
+          </view>
+          <towxml class="userMessage" nodes="{{item.content}}" v-if="{{item.content !== null}}"></towxml>
+        </view>
+        <image class="userAvatar" src="{{user.avatar}}"></image>
+      </view>
+    </view>
+    <view class="row" id="bottomRow">
+      <view class="robotRow" wx:if="{{sessionIdInLongTextDialogueExecuteEntitys}}">
+        <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
+        <!-- <view class="robotMessage">{{loadingMessage}}</view> -->
+        <towxml class="robotMessage" wx:if="{{timestamp % 3 === 0}}" nodes="{{longLoadingMessage1}}"></towxml>
+        <towxml class="robotMessage" wx:if="{{timestamp % 3 === 1}}" nodes="{{longLoadingMessage2}}"></towxml>
+        <towxml class="robotMessage" wx:if="{{timestamp % 3 === 2}}" nodes="{{longLoadingMessage3}}"></towxml>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 2}}">
+    <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
+    <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
+    <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+    <view class="inputArea">
+      <view class="prompts">
+        <button class="prompt" wx:for="{{robots[robotActive].prompts}}" bind:tap="promptChat" data-input="{{item}}">{{item}}</button>
+      </view>
+      <view class="fileContainer" wx:if="{{file != null}}">
+        <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
+        <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}"></image>
+        <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{file.fileType === 'csv'}}"></image>
+        <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{file.fileType === 'xlsx' || file.fileType === 'xls'}}"></image>
+        <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{file.fileType === 'mp4'}}"></image>
+        <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{file.fileType === 'pdf'}}"></image>
+        <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{file.fileType === 'ppt'}}"></image>
+        <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{file.fileType === 'rar'}}"></image>
+        <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{file.fileType === 'txt'}}"></image>
+        <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{file.fileType === 'docx' || file.fileType === 'doc'}}"></image>
+        <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{file.fileType === 'zip'}}"></image>
+        <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else></image>
+      </view>
+      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+    </view>
+    <button class="send" bind:tap="longTextDialogueSubmit" data-="{{null}}">发送</button>
+  </view>
 </view>

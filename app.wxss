@@ -1,5 +1,4 @@
 /**app.wxss**/
-@import "./miniprogram_npm/@rojer/katex-mini/index.wxss";
 
 .container {
   height: 100%;

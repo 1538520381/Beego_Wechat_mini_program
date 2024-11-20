@@ -19,6 +19,8 @@ const {
   getSessionList,
   getMessageList,
   chat,
+  longTextDialogueSubmit,
+  longTextDialogueQuery
 } = require("../../apis/chat")
 
 Page({
@@ -63,6 +65,11 @@ Page({
 
     clock: null,
     timestamp: 0,
+
+    sessionIdInLongTextDialogueExecuteEntitys: false,
+    longLoadingMessage1: app.towxml("题目分析中.", "markdown"),
+    longLoadingMessage2: app.towxml("题目分析中. .", "markdown"),
+    longLoadingMessage3: app.towxml("题目分析中. . .", "markdown"),
   },
 
   /**
@@ -86,6 +93,10 @@ Page({
         timestamp: this.data.timestamp + 1
       })
     }, 500)
+
+    setInterval(() => {
+      this.longTextDialogueQuery()
+    }, 60 * 1000)
 
     this.updateMainHeight()
   },
@@ -157,7 +168,7 @@ Page({
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -166,7 +177,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -179,7 +190,7 @@ Page({
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -188,7 +199,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -201,7 +212,7 @@ Page({
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -210,7 +221,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -242,7 +253,7 @@ Page({
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -251,7 +262,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -293,7 +304,7 @@ Page({
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -302,7 +313,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -339,12 +350,14 @@ Page({
           messages: messages
         })
 
+        this.isSessionIdInLongTextDialogueExecuteEntitys(this.data.sessions[this.data.sessionActive].id)
+
         this.toScrollBottom()
       } else {
         wx.showToast({
           title: res.data.message,
           duration: 1000,
-          icon: 'error',
+          icon: 'none',
           mask: true
         })
       }
@@ -353,7 +366,7 @@ Page({
       wx.showToast({
         title: "系统异常，请联系管理员",
         duration: 1000,
-        icon: 'error',
+        icon: 'none',
         mask: true
       })
     })
@@ -668,6 +681,75 @@ Page({
       });
     }
   },
+  longTextDialogueSubmit() {
+    let messages = this.data.messages
+    messages.push({
+      role: 'user',
+      content: isEmpty(this.data.input) ? null : app.towxml(this.data.input, 'markdown'),
+      fileType: isEmpty(this.data.file) ? null : this.data.file.fileType,
+      fileName: isEmpty(this.data.file) ? null : this.data.file.fileName,
+      fileUrl: isEmpty(this.data.file) ? null : this.data.file.fileUrl
+    })
+    longTextDialogueSubmit(this.data.robots[this.data.robotActive].id, this.data.sessions[this.data.sessionActive].id, this.data.robots[this.data.robotActive].handle, this.data.input, isEmpty(this.data.file) ? null : this.data.file.fileType, isEmpty(this.data.file) ? null : this.data.file.fileName, isEmpty(this.data.file) ? null : this.data.file.fileUrl).then((res) => {
+      if (res.data.code === 200) {
+        app.globalData.longTextDialogueExecuteEntitys.push({
+          robotId: this.data.robots[this.data.robotActive].id,
+          sessionId: this.data.sessions[this.data.sessionActive].id,
+          executeId: res.data.data['execute_id'],
+        })
+        this.isSessionIdInLongTextDialogueExecuteEntitys(this.data.sessions[this.data.sessionActive].id)
+      } else {
+        wx.showToast({
+          title: res.data.message,
+          duration: 1000,
+          icon: 'none',
+          mask: true
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+      wx.showToast({
+        title: "系统异常，请联系管理员",
+        duration: 1000,
+        icon: 'none',
+        mask: true
+      })
+    })
+    this.setData({
+      input: "",
+      messages: messages
+    })
+  },
+  longTextDialogueQuery() {
+    console.log(app.globalData.longTextDialogueExecuteEntitys)
+    for (let i = 0; i < app.globalData.longTextDialogueExecuteEntitys.length; i++) {
+      longTextDialogueQuery(app.globalData.longTextDialogueExecuteEntitys[i].robotId, app.globalData.longTextDialogueExecuteEntitys[i].sessionId, app.globalData.longTextDialogueExecuteEntitys[i].executeId).then((res) => {
+        if (res.data.code === 200) {
+          wx.showToast({
+            title: "长文本生成完毕",
+            duration: 1000,
+            icon: 'none',
+            mask: true
+          })
+          app.globalData.longTextDialogueExecuteEntitys.splice(i, 1)
+          i--
+          if (app.globalData.longTextDialogueExecuteEntitys[i].sessionId === this.data.sessions[this.data.sessionActive].id) {
+            this.getMessageList()
+          }
+        } else {
+
+        }
+      }).catch((err) => {
+        console.log(err)
+        wx.showToast({
+          title: "系统异常，请联系管理员",
+          duration: 1000,
+          icon: 'none',
+          mask: true
+        })
+      })
+    }
+  },
 
   uploadFile(file, type) {
     let _this = this
@@ -789,6 +871,21 @@ Page({
     })
     this.setData({
       questionMarkdown: app.towxml(this.data.input, 'markdown')
+    })
+  },
+
+  isSessionIdInLongTextDialogueExecuteEntitys(sessionId) {
+    console.log(app.globalData.longTextDialogueExecuteEntitys)
+    for (let i = 0; i < app.globalData.longTextDialogueExecuteEntitys.length; i++) {
+      if (app.globalData.longTextDialogueExecuteEntitys[i].sessionId === sessionId) {
+        this.setData({
+          sessionIdInLongTextDialogueExecuteEntitys: true
+        })
+        return
+      }
+    }
+    this.setData({
+      sessionIdInLongTextDialogueExecuteEntitys: false
     })
   },
 
