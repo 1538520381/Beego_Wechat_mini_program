@@ -17,6 +17,10 @@ Component({
     isOpenAll: {
       type: Boolean,
       value: false
+    },
+    layer: {
+      type: Number,
+      value: 1
     }
   },
   observers: {
@@ -26,7 +30,7 @@ Component({
         v.outline.outline_content = app.towxml(v.outline.outline_content, 'markdown')
       })
       this.setData({
-        tree: params
+        tree: params,
       })
     }
   },

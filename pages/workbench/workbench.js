@@ -421,6 +421,17 @@ Page({
               mask: true
             })
             console.log(e)
+            let messages = this.data.messages
+            messages.push({
+              role: 'assistant',
+              content: app.towxml('系统异常', 'markdown')
+            })
+            this.setData({
+              messages: messages,
+              loadingMessage: "",
+              loadingFlag: false,
+            })
+            return
           }
 
           console.log(strs)
@@ -580,6 +591,17 @@ Page({
               mask: true
             })
             console.log(e)
+            let messages = this.data.messages
+            messages.push({
+              role: 'assistant',
+              content: app.towxml('系统异常', 'markdown')
+            })
+            this.setData({
+              messages: messages,
+              loadingMessage: "",
+              loadingFlag: false,
+            })
+            return
           }
           console.log(strs)
           for (let i in strs) {
@@ -646,6 +668,17 @@ Page({
               mask: true
             })
             console.log(e)
+            let messages = this.data.messages
+            messages.push({
+              role: 'assistant',
+              content: app.towxml('系统异常', 'markdown')
+            })
+            this.setData({
+              messages: messages,
+              loadingMessage: "",
+              loadingFlag: false,
+            })
+            return
           }
           console.log(strs)
           for (let i in strs) {
@@ -653,7 +686,7 @@ Page({
               this.data.dataFlag = true
             } else if (strs[i].startsWith("event:done")) {
               this.setData({
-                answer: this.data.loadingMessage,
+                answer: this.data.loadingMessage.replace(/#/g, '\\#'),
                 answerFlag: false,
                 loadingMessage: "",
                 loadingFlag: false,
@@ -717,6 +750,7 @@ Page({
     })
     this.setData({
       input: "",
+      file: null,
       messages: messages
     })
   },
@@ -731,11 +765,11 @@ Page({
             icon: 'none',
             mask: true
           })
-          app.globalData.longTextDialogueExecuteEntitys.splice(i, 1)
-          i--
           if (app.globalData.longTextDialogueExecuteEntitys[i].sessionId === this.data.sessions[this.data.sessionActive].id) {
             this.getMessageList()
           }
+          app.globalData.longTextDialogueExecuteEntitys.splice(i, 1)
+          i--
         } else {
 
         }
@@ -807,6 +841,34 @@ Page({
       file: null
     })
     this.updateMainHeight()
+  },
+
+  openFile(data) {
+    console.log(data)
+    console.log(data.currentTarget.dataset["url"])
+    wx.downloadFile({
+      url: data.currentTarget.dataset["url"],
+      success: function (res) {
+        console.log(res)
+        let path = res.tempFilePath;
+        wx.openDocument({
+          filePath: path,
+          showMenu: true,
+          success: function () {
+
+          },
+          fail: function (e) {
+            console.log(e)
+            wx.showToast({
+              title: "该类型文件暂不支持预览",
+              duration: 1000,
+              icon: 'none',
+              mask: true
+            })
+          }
+        })
+      }
+    })
   },
 
   selectRobot(data) {
@@ -899,6 +961,8 @@ Page({
     this.setData({
       webViewFlag: 1
     })
+    console.log(this.data.answer)
+    console.log('https://7072-prod-7ghr1n1r9680b968-1331511268.tcb.qcloud.la/latex/index.html?text=' + this.data.answer)
   },
 
   bindGetMsg(e) {

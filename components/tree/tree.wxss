@@ -1,5 +1,61 @@
-.tree {
+.tree1 {
   width: 100%;
+
+  text-align: left;
+}
+
+.tree2 {
+  margin: 0 0 0 10px;
+
+  width: calc(100% - 10px);
+
+  text-align: left;
+}
+
+.tree3 {
+  margin: 0 0 0 20px;
+
+  width: calc(100% - 20px);
+
+  text-align: left;
+}
+
+.tree4 {
+  margin: 0 0 0 30px;
+
+  width: calc(100% - 30px);
+
+  text-align: left;
+}
+
+.tree5 {
+  margin: 0 0 0 40px;
+
+  width: calc(100% - 40px);
+
+  text-align: left;
+}
+
+.tree6 {
+  margin: 0 0 0 50px;
+
+  width: calc(100% - 50px);
+
+  text-align: left;
+}
+
+.tree7 {
+  margin: 0 0 0 60px;
+
+  width: calc(100% - 60px);
+
+  text-align: left;
+}
+
+.tree8 {
+  margin: 0 0 0 70px;
+
+  width: calc(100% - 70px);
 
   text-align: left;
 }
@@ -11,7 +67,7 @@
 }
 
 .tree-item-onOff {
-  padding: 0 0 0 5px;
+  padding: 8px 0 0 5px;
 
   width: 10px;
 }
@@ -39,8 +95,6 @@
 
 .name {
   width: calc(100% - 50px);
-
-  font-size: 12px;
 }
 
 .tree-item-name-select {

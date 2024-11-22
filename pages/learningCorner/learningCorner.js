@@ -28,6 +28,8 @@ const {
   isEmpty
 } = require("../../utils/common");
 
+import TextDecoder from '../../miniprogram/miniprogram-text-decoder'
+
 Page({
   data: {
     user: {},
@@ -76,12 +78,12 @@ Page({
     })
 
     this.setData({
-      bookHeight: this.data.windowHeight / 2
+      bookHeight: this.data.windowHeight,
     })
 
     await this.getLearningCornerRobotList();
     await this.getCategoryList();
-    await this.getBooksListByCategoryId()
+    await this.getBooksListByCategoryId(null)
     await this.getFavoritesList()
 
     this.updateMainHeight()
@@ -328,12 +330,17 @@ Page({
       })
     })
   },
-  getBooksListByCategoryId() {
+  getBooksListByCategoryId(bookId) {
     return getBooksListByCategoryId(this.data.categorys[this.data.categorysActive].id).then((res) => {
       if (res.data.code === 200) {
         let books = []
         if (!isEmpty(res.data.data)) {
           for (let i = 0; i < res.data.data.length; i++) {
+            if (bookId != null && res.data.data[i]['book_id'] === bookId) {
+              this.setData({
+                booksActive: i
+              })
+            }
             books.push({
               id: res.data.data[i]['book_id'],
               name: res.data.data[i]['book_name'],
@@ -582,6 +589,17 @@ Page({
               mask: true
             })
             console.log(e)
+            let messages = this.data.messages
+            messages.push({
+              role: 'assistant',
+              content: app.towxml('系统异常', 'markdown')
+            })
+            this.setData({
+              messages: messages,
+              loadingMessage: "",
+              loadingFlag: false,
+            })
+            return
           }
 
           console.log(strs)
@@ -680,6 +698,34 @@ Page({
     this.updateMainHeight()
   },
 
+  openFile(data) {
+    console.log(data)
+    console.log(data.currentTarget.dataset["url"])
+    wx.downloadFile({
+      url: data.currentTarget.dataset["url"],
+      success: function (res) {
+        console.log(res)
+        let path = res.tempFilePath;
+        wx.openDocument({
+          filePath: path,
+          showMenu: true,
+          success: function () {
+
+          },
+          fail: function (e) {
+            console.log(e)
+            wx.showToast({
+              title: "该类型文件暂不支持预览",
+              duration: 1000,
+              icon: 'none',
+              mask: true
+            })
+          }
+        })
+      }
+    })
+  },
+
   openMenu() {
     if (!this.data.loadingFlag) {
       this.setData({
@@ -700,7 +746,7 @@ Page({
         booksActive: 0,
         menuVis: false
       })
-      this.getBooksListByCategoryId()
+      this.getBooksListByCategoryId(null)
     }
   },
   selectBook(data) {
@@ -710,6 +756,21 @@ Page({
       })
     }
     this.getOutlineByBookId(this.data.books[this.data.booksActive].id)
+    this.getSessionList()
+  },
+  selectFavorites(data) {
+    console.log(data.currentTarget.dataset["book"])
+    for (let i = 0; i < this.data.categorys.length; i++) {
+      if (this.data.categorys[i].id === data.currentTarget.dataset["book"].categoryId) {
+        this.setData({
+          categorysActive: i,
+          booksActive: 0,
+          menuVis: false
+        })
+        this.getBooksListByCategoryId()
+        return
+      }
+    }
   },
 
   updateMainHeight() {
@@ -718,7 +779,7 @@ Page({
     query.exec((res) => {
       this.data.footerHeight = res[0].height;
       this.setData({
-        mainHeight: this.data.windowHeight / 2 - this.data.footerHeight - 20
+        mainHeight: this.data.windowHeight - this.data.footerHeight - 20
       })
       console.log(this.data.mainHeight)
     })
@@ -741,6 +802,17 @@ Page({
     this.setData({
       robotFlag: true,
       bookHeight: this.data.windowHeight / 2
+    })
+  },
+  openRobot() {
+    this.setData({
+      robotFlag: false
+    })
+    this.updateMainHeight()
+  },
+  closeRobot() {
+    this.setData({
+      robotFlag: true
     })
   },
 

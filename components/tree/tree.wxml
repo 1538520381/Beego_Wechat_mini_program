@@ -1,5 +1,5 @@
 <!--pages/common/comTree/index.wxml-->
-<view wx:for="{{tree}}" wx:key="index" class="tree">
+<view wx:for="{{tree}}" wx:key="index" class="{{layer === 1 ? 'tree1' : 'tree2'}}">
   <view class="tree-item tree-item-select">
     <view class="tree-item-onOff" wx:if="{{item.outline_child_list && item.outline_child_list.length > 0}}" bindtap="isOpen" data-index="{{index}}">
       <image src="/assets/icons/open.svg" class="{{item.open ? 'tree-item-onOff-open' : 'tree-item-onOff-closed'}}"></image>
@@ -10,6 +10,6 @@
       <towxml  class="name" nodes="{{item.outline.outline_content}}"></towxml>
     </view>
   </view>
-  <c-tree wx:if="{{item.outline_child_list && item.outline_child_list.length > 0 && item.open }}" dataTree='{{ item.outline_child_list }}' selectKey="{{selectKey}}" isSelectLastNode="{{isSelectLastNode}}" isOpenAll="{{isOpenAll}}">
+  <c-tree wx:if="{{item.outline_child_list && item.outline_child_list.length > 0 && item.open }}" dataTree='{{ item.outline_child_list }}' selectKey="{{selectKey}}" isSelectLastNode="{{isSelectLastNode}}" isOpenAll="{{isOpenAll}}" layer="{{layer + 1}}">
   </c-tree>
 </view>

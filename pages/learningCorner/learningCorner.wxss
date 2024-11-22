@@ -209,12 +209,22 @@ page {
   height: 26px;
 }
 
-.learningCorner .outlineTree {
+.learningCorner .outlineTreeLong {
   display: inline-block;
 
   vertical-align: top;
 
-  width: calc(100% - 120px);
+  width: calc(100% - 130px);
+
+  transition: height 0.5s ease;
+}
+
+.learningCorner .outlineTreeShort {
+  display: inline-block;
+
+  vertical-align: top;
+
+  width: calc((100% - 130px) / 2);
 
   transition: height 0.5s ease;
 }
@@ -228,7 +238,7 @@ page {
   font-weight: bold;
 }
 
-.learningCorner .robotFlag{
+/* .learningCorner .robotFlag{
   width: 100%;
   height: 15px;
 
@@ -312,6 +322,196 @@ page {
   bottom: 0;
 
   width: 100%;
+  height: auto;
+  max-height: 300px;
+
+  z-index: 0;
+}
+
+.learningCorner .footer .scrollToBottomButton {
+  position: absolute;
+
+  left: calc(50% - 30px / 2 - 2px / 2);
+  top: -30px;
+
+  width: 30px;
+  height: 30px;
+
+  border: 2px solid #DFE5EC;
+  border-radius: 50%;
+
+  background-color: #ffffff;
+}
+
+.learningCorner .footer .smallButton {
+  margin: 8px 0 8px 6px;
+
+  width: 24px;
+  height: 24px;
+}
+
+.learningCorner .footer .inputArea {
+  display: inline-block;
+
+  vertical-align: bottom;
+
+  margin: 6px 10px 5px 10px;
+
+  width: calc(100% - 6px * 3 - 24px * 3 - 50px - 5px * 2 - 10px * 2);
+}
+
+.learningCorner .footer .inputArea .fileContainer {
+  display: inline-block;
+
+  position: relative;
+
+  padding: 0 2px 2px 2px;
+}
+
+.learningCorner .footer .inputArea .fileContainer .removeFile {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background-color: #C9C9C9;
+}
+
+.learningCorner .footer .inputArea .fileContainer .file {
+  max-width: 100px;
+  height: 50px;
+}
+
+.learningCorner .footer .inputArea .input {
+  padding: 2px 5px 2px 5px;
+
+  width: calc(100% - 5px * 2);
+  height: 18px;
+  max-height: 90px;
+
+  font-size: 14px;
+
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.learningCorner .footer .send {
+  display: inline-block;
+
+  vertical-align: bottom;
+
+  margin: 5px 5px 5px 5px;
+  padding: 0 0 0 0;
+
+  width: 50px;
+  height: 30px;
+
+  font-size: 14px;
+
+  line-height: 30px;
+
+  color: #ffffff;
+
+  background-color: #409EFF;
+} */
+
+.learningCorner .robotFlag {
+  display: inline-block;
+
+  vertical-align: top;
+
+  width: 10px;
+  height: 100%;
+}
+
+.learningCorner .robotFlag .robotFlagIcon {
+  position: absolute;
+
+  top: calc(50% - 30px);
+
+  width: 10px;
+  height: 30px;
+}
+
+.learningCorner .main {
+  display: inline-block;
+
+  vertical-align: top;
+
+  width: calc((100% - 130px) / 2);
+}
+
+.learningCorner .main .row .robotRow .robotAvatar {
+  display: inline-block;
+
+  vertical-align: top;
+
+  margin: 5px 0 0 5px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+}
+
+.learningCorner .main .row .robotRow .robotMessage {
+  display: inline-block;
+
+  max-width: calc(90% - 5px - 32px - 10px);
+
+  font-size: 16px;
+}
+
+.learningCorner .main .row .userRow {
+  text-align: right;
+}
+
+.learningCorner .main .row .userRow .userMessageContainer {
+  display: inline-block;
+
+  margin: 0 4px 0 0;
+
+  max-width: calc(90% - 5px - 32px - 10px);
+
+  text-align: right;
+}
+
+.learningCorner .main .row .userRow .userMessageContainer .fileContainer .file {
+  max-width: 100px;
+  height: 50px;
+}
+
+.learningCorner .main .row .userRow .userMessageContainer .userMessage {
+  font-size: 16px;
+
+  text-align: left;
+}
+
+.learningCorner .main .row .userRow .userAvatar {
+  display: inline-block;
+
+  vertical-align: top;
+
+  margin: 5px 5px 0 0;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+}
+
+.learningCorner .footer {
+  position: absolute;
+
+  bottom: 0;
+  right: 0;
+
+  width: calc((100% - 130px) / 2);
   height: auto;
   max-height: 300px;
 
