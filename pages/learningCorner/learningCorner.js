@@ -25,7 +25,7 @@ const {
 } = require("../../apis/chat")
 
 const {
-  isEmpty
+  isEmpty, sleep
 } = require("../../utils/common");
 
 import TextDecoder from '../../miniprogram/miniprogram-text-decoder'
@@ -779,7 +779,7 @@ Page({
     query.exec((res) => {
       this.data.footerHeight = res[0].height;
       this.setData({
-        mainHeight: this.data.windowHeight - this.data.footerHeight - 20
+        mainHeight: this.data.windowHeight - this.data.footerHeight - 35
       })
       console.log(this.data.mainHeight)
     })
@@ -808,7 +808,9 @@ Page({
     this.setData({
       robotFlag: false
     })
-    this.updateMainHeight()
+    sleep(600).then(() => {
+      this.updateMainHeight()
+    })
   },
   closeRobot() {
     this.setData({

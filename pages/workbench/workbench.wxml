@@ -83,7 +83,7 @@
         <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{file.fileType === 'zip'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
         <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
       </view>
-      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始你的提问吧" auto-height maxlength="-1"></textarea>
     </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
   </view>
@@ -173,7 +173,7 @@
         <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{file.fileType === 'zip'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
         <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
       </view>
-      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
+      <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始你的提问吧" auto-height maxlength="-1"></textarea>
     </view>
     <button class="send" bind:tap="longTextDialogueSubmit" data-="{{null}}">发送</button>
   </view>

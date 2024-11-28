@@ -36,7 +36,76 @@
     <tree dataTree="{{outline}}" bind:select="handleSelect" isOpenAll="{{false}}" layer="{{1}}"></tree>
   </scroll-view>
 
-  <view class="robotFlag">
+  <view class="robotController {{ robotFlag ? 'closeRobotController' : 'openRobotController' }}">
+    <image class="robotIcon" src="/assets/icons/robot.svg" bind:tap="openRobot" wx:if="{{robotFlag}}"></image>
+
+    <view class="chatController" wx:if="{{!robotFlag}}">
+      <view class="header">
+        <image class="forkIcon" src="/assets/pictures/fork.png" bind:tap="closeRobot"></image>
+      </view>
+
+      <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y>
+        <view class="row" wx:for="{{messages}}" wx:key="index">
+          <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
+            <image class="robotAvatar" src="{{categoryIdToRobot[books[booksActive].categoryId].avatar}}"></image>
+            <towxml class="robotMessage" nodes="{{item.content}}"></towxml>
+          </view>
+          <view class="userRow" wx:if="{{item.role === 'user'}}">
+            <view class="userMessageContainer">
+              <view class="fileContainer" wx:if="{{item.fileUrl != null}}" bind:tap="openFile" data-url="{{item.fileUrl}}">
+                <image class="file" src="{{item.fileUrl}}" mode="heightFix" wx:if="{{item.fileType === 'jpg' || item.fileType === 'png'}}"></image>
+                <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{item.fileType === 'csv'}}"></image>
+                <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{item.fileType === 'xlsx' || item.fileType === 'xls'}}"></image>
+                <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{item.fileType === 'mp4'}}"></image>
+                <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{item.fileType === 'pdf'}}"></image>
+                <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{item.fileType === 'ppt'}}"></image>
+                <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{item.fileType === 'rar'}}"></image>
+                <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{item.fileType === 'txt'}}"></image>
+                <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{item.fileType === 'docx' || item.fileType === 'doc'}}"></image>
+                <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{item.fileType === 'zip'}}"></image>
+                <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else></image>
+              </view>
+              <towxml class="userMessage" nodes="{{item.content}}" v-if="{{item.content !== null}}"></towxml>
+            </view>
+            <image class="userAvatar" src="{{user.avatar}}"></image>
+          </view>
+        </view>
+        <view class="row" id="bottomRow">
+          <view class="robotRow" wx:if="{{loadingFlag}}">
+            <image class="robotAvatar" src="{{categoryIdToRobot[books[booksActive].categoryId].avatar}}"></image>
+            <towxml class="robotMessage" nodes="{{loadingMessageMarkdown}}"></towxml>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view id="footer" class="footer">
+        <image class="scrollToBottomButton" src="/assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
+        <image class="smallButton" src="/assets/pictures/photo.png" bind:tap="userUploadImage"></image>
+        <image class="smallButton" src="/assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+        <image class="smallButton" src="/assets/pictures/clear.png" bind:tap="removeSession"></image>
+        <view class="inputArea">
+          <view class="fileContainer" wx:if="{{file != null}}">
+            <image class="removeFile" src="../../assets/pictures/fork.png" bind:tap='removeFile'></image>
+            <image class="file" src="{{file.fileUrl}}" mode="heightFix" wx:if="{{file.fileType === 'jpg' || file.fileType === 'png'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/CSV.png" mode="heightFix" wx:elif="{{file.fileType === 'csv'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/excel.png" mode="heightFix" wx:elif="{{file.fileType === 'xlsx' || file.fileType === 'xls'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/MP4.png" mode="heightFix" wx:elif="{{file.fileType === 'mp4'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/pdf.png" mode="heightFix" wx:elif="{{file.fileType === 'pdf'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/ppt.png" mode="heightFix" wx:elif="{{file.fileType === 'ppt'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/rar.png" mode="heightFix" wx:elif="{{file.fileType === 'rar'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/txt.png" mode="heightFix" wx:elif="{{file.fileType === 'txt'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/word.png" mode="heightFix" wx:elif="{{file.fileType === 'docx' || file.fileType === 'doc'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/zip.png" mode="heightFix" wx:elif="{{file.fileType === 'zip'}}" bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+            <image class="file" src="../../assets/pictures/unknownFile.png" mode="heightFix" wx:else bind:tap="openFile" data-url="{{file.fileUrl}}"></image>
+          </view>
+          <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始你的提问吧" auto-height maxlength="-1"></textarea>
+        </view>
+        <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- <view class="robotFlag">
     <image class="robotFlagIcon" src="/assets/pictures/left.png" bind:tap="openRobot" wx:if="{{robotFlag}}"></image>
     <image class="robotFlagIcon" src="/assets/pictures/right.png" bind:tap="closeRobot" wx:if="{{!robotFlag}}"></image>
   </view>
@@ -98,7 +167,7 @@
       <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
     </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
-  </view>
+  </view> -->
 
   <!-- <view class="robotFlag">
     <image class="robotFlagIcon" src="/assets/pictures/dropDown.png" bind:tap="dropDown" wx:if="{{robotFlag}}"></image>

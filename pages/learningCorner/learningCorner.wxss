@@ -224,7 +224,7 @@ page {
 
   vertical-align: top;
 
-  width: calc((100% - 130px) / 2);
+  width: calc(100% - 130px);
 
   transition: height 0.5s ease;
 }
@@ -236,6 +236,57 @@ page {
 
   font-size: 16px;
   font-weight: bold;
+}
+
+.learningCorner .robotController {
+  position: absolute;
+
+  bottom: 10px;
+  right: 10px;
+
+  transition: all 0.6s;
+
+  z-index: 1;
+}
+
+.learningCorner .closeRobotController {
+  width: 30px;
+  height: 30px;
+}
+
+.learningCorner .openRobotController {
+  width: 300px;
+  height: calc(100% - 10px * 2);
+
+  background-color: #ffffff;
+
+  border-radius: 15px;
+
+  box-shadow: 0 0 5px 1px #999;
+}
+
+.learningCorner .robotController .robotIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.learningCorner .robotController .chatController {
+  width: 100%;
+  height: 100%;
+}
+
+.learningCorner .robotController .chatController .header{
+  width: 100%;
+  height: 25px;
+
+  text-align: right;
+}
+
+.learningCorner .robotController .chatController .header .forkIcon{
+  margin: 5px 5px 0 0;
+
+  width: 20px;
+  height: 20px;
 }
 
 /* .learningCorner .robotFlag{
@@ -438,15 +489,15 @@ page {
   height: 30px;
 }
 
-.learningCorner .main {
+.learningCorner .robotController .chatController .main {
   display: inline-block;
 
   vertical-align: top;
 
-  width: calc((100% - 130px) / 2);
+  width: calc(100%);
 }
 
-.learningCorner .main .row .robotRow .robotAvatar {
+.learningCorner .robotController .chatController .main .row .robotRow .robotAvatar {
   display: inline-block;
 
   vertical-align: top;
@@ -459,7 +510,7 @@ page {
   border-radius: 50%;
 }
 
-.learningCorner .main .row .robotRow .robotMessage {
+.learningCorner .robotController .chatController .main .row .robotRow .robotMessage {
   display: inline-block;
 
   max-width: calc(90% - 5px - 32px - 10px);
@@ -467,11 +518,11 @@ page {
   font-size: 16px;
 }
 
-.learningCorner .main .row .userRow {
+.learningCorner .robotController .chatController .main .row .userRow {
   text-align: right;
 }
 
-.learningCorner .main .row .userRow .userMessageContainer {
+.learningCorner .robotController .chatController .main .row .userRow .userMessageContainer {
   display: inline-block;
 
   margin: 0 4px 0 0;
@@ -481,18 +532,18 @@ page {
   text-align: right;
 }
 
-.learningCorner .main .row .userRow .userMessageContainer .fileContainer .file {
+.learningCorner .robotController .chatController .main .row .userRow .userMessageContainer .fileContainer .file {
   max-width: 100px;
   height: 50px;
 }
 
-.learningCorner .main .row .userRow .userMessageContainer .userMessage {
+.learningCorner .robotController .chatController .main .row .userRow .userMessageContainer .userMessage {
   font-size: 16px;
 
   text-align: left;
 }
 
-.learningCorner .main .row .userRow .userAvatar {
+.learningCorner .robotController .chatController .main .row .userRow .userAvatar {
   display: inline-block;
 
   vertical-align: top;
@@ -505,20 +556,20 @@ page {
   border-radius: 50%;
 }
 
-.learningCorner .footer {
+.learningCorner .robotController .chatController .footer {
   position: absolute;
 
   bottom: 0;
   right: 0;
 
-  width: calc((100% - 130px) / 2);
+  width: calc(100%);
   height: auto;
   max-height: 300px;
 
   z-index: 0;
 }
 
-.learningCorner .footer .scrollToBottomButton {
+.learningCorner .robotController .chatController .footer .scrollToBottomButton {
   position: absolute;
 
   left: calc(50% - 30px / 2 - 2px / 2);
@@ -533,14 +584,14 @@ page {
   background-color: #ffffff;
 }
 
-.learningCorner .footer .smallButton {
+.learningCorner .robotController .chatController .footer .smallButton {
   margin: 8px 0 8px 6px;
 
   width: 24px;
   height: 24px;
 }
 
-.learningCorner .footer .inputArea {
+.learningCorner .robotController .chatController .footer .inputArea {
   display: inline-block;
 
   vertical-align: bottom;
@@ -550,7 +601,7 @@ page {
   width: calc(100% - 6px * 3 - 24px * 3 - 50px - 5px * 2 - 10px * 2);
 }
 
-.learningCorner .footer .inputArea .fileContainer {
+.learningCorner .robotController .chatController .footer .inputArea .fileContainer {
   display: inline-block;
 
   position: relative;
@@ -558,7 +609,7 @@ page {
   padding: 0 2px 2px 2px;
 }
 
-.learningCorner .footer .inputArea .fileContainer .removeFile {
+.learningCorner .robotController .chatController .footer .inputArea .fileContainer .removeFile {
   position: absolute;
 
   top: -6px;
@@ -572,12 +623,12 @@ page {
   background-color: #C9C9C9;
 }
 
-.learningCorner .footer .inputArea .fileContainer .file {
+.learningCorner .robotController .chatController .footer .inputArea .fileContainer .file {
   max-width: 100px;
   height: 50px;
 }
 
-.learningCorner .footer .inputArea .input {
+.learningCorner .robotController .chatController .footer .inputArea .input {
   padding: 2px 5px 2px 5px;
 
   width: calc(100% - 5px * 2);
@@ -590,7 +641,7 @@ page {
   border-radius: 10px;
 }
 
-.learningCorner .footer .send {
+.learningCorner .robotController .chatController .footer .send {
   display: inline-block;
 
   vertical-align: bottom;
