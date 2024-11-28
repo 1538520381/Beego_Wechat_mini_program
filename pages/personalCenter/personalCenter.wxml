@@ -9,6 +9,19 @@
     <image class="userAvatar" src="{{user.avatarUrl}}"></image>
     <button class="uploadAvatar" bind:tap="userUploadImage">上传头像</button>
     <view class="item">
+      <view class="key">ID</view>
+      <view class="value">{{user.id +"  " +
+              "『" +
+              (user.tag === "0"
+                  ? "开发者"
+                  : user.tag === "1"
+                      ? "内测用户"
+                      : user.tag === "2"
+                          ? "普通用户"
+                          : "高级用户") +
+              "』"}}</view>
+    </view>
+    <view class="item">
       <view class="key">昵称</view>
       <view class="value">{{user.userName}}</view>
     </view>

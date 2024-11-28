@@ -91,7 +91,8 @@ Page({
             gender: res.data.data["gender"],
             school: res.data.data["school"],
             major: res.data.data["major"],
-            enterTime: res.data.data["enter_time"]
+            enterTime: res.data.data["enter_time"],
+            tag: res.data.data["tag"]
           }
         })
       } else {
