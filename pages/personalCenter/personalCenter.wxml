@@ -1,6 +1,6 @@
 <wxs module="utils" src='./personalCenter.wxs'></wxs>
 
-<view class="personalCenter">
+<scroll-view class="personalCenter" scroll-y>
   <view class="header">
     <!-- <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image> -->
     <view class="title">个人中心</view>
@@ -76,4 +76,4 @@
       </view>
     </view>
   </view>
-</view>
+</scroll-view>

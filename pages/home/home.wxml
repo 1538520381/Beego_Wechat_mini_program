@@ -11,7 +11,7 @@
     <view class="slogan1">贴合高校使用场景</view>
     <view class="slogan1">最懂大学生的AI学习软件</view>
     <button class='loginButton' open-type="getPhoneNumber" bindgetphonenumber="login">立即体验</button>
-    <button class='loginButton' bind:tap="login1">立即体验</button>
+    <!-- <button class='loginButton' bind:tap="login1">立即体验</button> -->
     <view>{{error}}</view>
     <!-- <view class="slogan2">{{ chatMessage }}</view> -->
   </view>

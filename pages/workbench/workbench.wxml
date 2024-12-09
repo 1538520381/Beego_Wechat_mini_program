@@ -24,7 +24,7 @@
     <image class="userAvatar" src="{{user.avatar}}"></image>
   </view>
 
-  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 0}}">
+  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 0 || robots[robotActive].handle === 2}}">
     <view class="row" wx:for="{{messages}}" wx:key="index">
       <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
         <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
@@ -61,7 +61,7 @@
     </view>
   </scroll-view>
 
-  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 0}}">
+  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 0 || robots[robotActive].handle === 2}}">
     <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
     <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
     <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
@@ -112,7 +112,7 @@
     </web-view>
   </scroll-view>
 
-  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 2}}">
+  <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 3}}">
     <view class="row" wx:for="{{messages}}" wx:key="index">
       <view class="robotRow" wx:if="{{item.role === 'assistant'}}">
         <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
@@ -151,7 +151,7 @@
     </view>
   </scroll-view>
 
-  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 2}}">
+  <view id="footer" class="footer" wx:if="{{robots[robotActive].handle === 3}}">
     <image class="scrollToBottomButton" src="../../assets/pictures/arrowBottom.png" bind:tap="toScrollBottom"></image>
     <image class="fileButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
     <image class="fileButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>

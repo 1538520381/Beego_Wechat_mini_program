@@ -10,8 +10,7 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff",
-    "disableScroll": true
+    "navigationBarBackgroundColor": "#ffffff"
   },
   "tabBar": {
     "list": [

@@ -788,7 +788,7 @@ Page({
   uploadFile(file, type) {
     let _this = this
     wx.uploadFile({
-      url: 'https://backend-128151-8-1331511268.sh.run.tcloudbase.com/file/uploadPicture?bucketType=1',
+      url: 'https://ubeego.chat/file/uploadPicture?bucketType=1',
       method: "POST",
       header: {
         'Authorization': wx.getStorageSync('token')

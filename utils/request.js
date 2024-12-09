@@ -1,9 +1,10 @@
 const CONFIG = require('../config')
 
 export const request = (params) => {
+  console.log(CONFIG.baseUrl)
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `https://backend-128151-8-1331511268.sh.run.tcloudbase.com${params.url}`,
+      url: `${CONFIG.baseUrl}${params.url}`,
       header: {
         'Authorization': wx.getStorageSync('token')
       },
@@ -42,7 +43,7 @@ export const request = (params) => {
 
 export const requestStream = (params) => {
   return wx.request({
-    url: `https://backend-128151-8-1331511268.sh.run.tcloudbase.com${params.url}`,
+    url: `${CONFIG.baseUrl}${params.url}`,
     enableChunked: true,
     header: {
       'Authorization': wx.getStorageSync('token')
