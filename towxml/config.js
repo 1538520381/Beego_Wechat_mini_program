@@ -3,12 +3,12 @@ module.exports = {
 
     // 数学公式解析API
     latex: {
-        api: 'https://latex-128151-8-1331511268.sh.run.tcloudbase.com/?tex'
+        api: 'https://ubeego.chat/markdownServer/?tex'
     },
 
     // yuml图解析APPI
     yuml: {
-        api: 'https://latex-128151-8-1331511268.sh.run.tcloudbase.com/?yuml'
+        api: 'https://ubeego.chat/markdownServer/?yuml'
     },
 
     // markdown解析配置，保留需要的选项即可
