@@ -102,14 +102,14 @@
     </view>
     <view class="robotRow" wx:if="{{answer !== null || answerFlag}}">
       <image class="robotAvatar" src="{{robots[robotActive].avatar}}"></image>
-      <!-- <view class="robotMessage">{{item.content}}</view> -->
-      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 0}}">{{"题目分析中."}}</button>
-      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 1}}">{{"题目分析中.."}}</button>
-      <button class="openWebviewButton" wx:if="{{answerFlag && timestamp % 3 === 2}}">{{"题目分析中..."}}</button>
-      <button class="openWebviewButton" wx:if="{{!answerFlag}}" bind:tap="openWebview">题目解析生成完毕，点击查看详情</button>
+      <towxml class="robotMessage" wx:if="{{answerFlag && timestamp % 3 === 0 && loadingMessageMarkdown == null}}" nodes="{{longLoadingMessage1}}"></towxml>
+      <towxml class="robotMessage" wx:if="{{answerFlag && timestamp % 3 === 1 && loadingMessageMarkdown == null}}" nodes="{{longLoadingMessage2}}"></towxml>
+      <towxml class="robotMessage" wx:if="{{answerFlag && timestamp % 3 === 2 && loadingMessageMarkdown == null}}" nodes="{{longLoadingMessage3}}"></towxml>
+      <towxml class="robotMessage" wx:if="{{answerFlag && loadingMessageMarkdown != null}}" nodes="{{loadingMessageMarkdown}}"></towxml>
+      <towxml class="robotMessage" wx:if="{{!answerFlag}}"  nodes="{{answer}}"></towxml>
     </view>
-    <web-view wx:if="{{webViewFlag !== 0}}" src="{{'https://7072-prod-7ghr1n1r9680b968-1331511268.tcb.qcloud.la/latex/index.html?text=' + answer}}" bindload="loadSuccess">
-    </web-view>
+    <!-- <web-view wx:if="{{webViewFlag !== 0}}" src="{{'https://ubeego.chat/index.html?text=' + answer}}" bindload="loadSuccess">
+    </web-view> -->
   </scroll-view>
 
   <scroll-view id="main" class="main" style="height: {{mainHeight}}px" scroll-into-view="{{toView}}" scroll-y wx:if="{{robots[robotActive].handle === 3}}">

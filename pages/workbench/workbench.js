@@ -405,7 +405,6 @@ Page({
       this.data.dataFlag = false
 
       this.data.requestStream.onChunkReceived(res => {
-        console.log(res.data)
         if (this.data.loadingFlag) {
 
           let strs = []
@@ -413,6 +412,7 @@ Page({
             const arrayBuffer = new Uint8Array(res.data)
             let str = new TextDecoder().decode(arrayBuffer)
             strs = str.split("\n")
+            console.log(strs)
           } catch (e) {
             wx.showToast({
               title: "系统异常，请联系管理员",
@@ -420,7 +420,6 @@ Page({
               icon: 'none',
               mask: true
             })
-            console.log(e)
             let messages = this.data.messages
             messages.push({
               role: 'assistant',
@@ -434,7 +433,6 @@ Page({
             return
           }
 
-          console.log(strs)
           for (let i in strs) {
             if (strs[i].startsWith("event:all")) {
               this.data.dataFlag = true
@@ -442,7 +440,9 @@ Page({
               let messages = this.data.messages
               messages.push({
                 role: 'assistant',
-                content: app.towxml(this.data.loadingMessage.replace(/\\n/g, "\n"), 'markdown')
+                content: app.towxml(this.data.loadingMessage.replace(/\\n/g, "\n").replace(/\\u([0-9A-Fa-f]{4})/g, function(match, group) {
+                  return String.fromCharCode(parseInt(group, 16));
+              }), 'markdown')
               })
               this.setData({
                 messages: messages,
@@ -455,14 +455,16 @@ Page({
               if (!this.data.dataFlag) {
                 this.data.loadingMessage += strs[i].substring(5)
               } else {
-                this.data.loadingMessage = strs[i].substring(5)
+                this.data.loadingMessage = strs[i].substring(6,strs[i].length - 1)
                 this.data.dataFlag = false
               }
+              console.log(this.data.loadingMessage)
               this.setData({
                 loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
               })
             } else {
               this.data.loadingMessage += strs[i]
+              console.log(this.data.loadingMessage)
               this.setData({
                 loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
               })
@@ -650,15 +652,18 @@ Page({
       this.data.dataFlag = false
       this.data.loadingFlag = true
       this.setData({
+        loadingMessage: "",
+        loadingMessageMarkdown: null,
         answerFlag: true
       })
-
+      let allFlag = false
       this.data.requestStream.onChunkReceived(res => {
         if (this.data.loadingFlag) {
           let strs = []
           try {
             const arrayBuffer = new Uint8Array(res.data)
             let str = new TextDecoder().decode(arrayBuffer)
+            console.log(str)
             strs = str.split("\n")
           } catch (e) {
             wx.showToast({
@@ -667,7 +672,6 @@ Page({
               icon: 'none',
               mask: true
             })
-            console.log(e)
             let messages = this.data.messages
             messages.push({
               role: 'assistant',
@@ -680,13 +684,13 @@ Page({
             })
             return
           }
-          console.log(strs)
           for (let i in strs) {
             if (strs[i].startsWith("event:all")) {
               this.data.dataFlag = true
+              allFlag = true
             } else if (strs[i].startsWith("event:done")) {
               this.setData({
-                answer: this.data.loadingMessage.replace(/#/g, '\\#'),
+                answer:app.towxml(this.latexToMarkdown(this.data.loadingMessage.replace(/\\n/g, "\n")),'markdown'),
                 answerFlag: false,
                 loadingMessage: "",
                 loadingFlag: false,
@@ -697,22 +701,84 @@ Page({
               if (!this.data.dataFlag) {
                 this.data.loadingMessage += strs[i].substring(5)
               } else {
-                this.data.loadingMessage = strs[i].substring(5)
+                if(allFlag){
+                  this.data.loadingMessage = strs[i].substring(6,strs[i].length - 1)
+                }else{
+                  this.data.loadingMessage = strs[i].substring(6)
+                }
                 this.data.dataFlag = false
               }
               this.setData({
-                loadingMessageMarkdown: this.data.loadingMessage
+                loadingMessageMarkdown: app.towxml(this.data.loadingMessage,'markdown')
               })
-            } else {
-              this.data.loadingMessage += strs[i]
+            } else {              
+              if(allFlag){
+                this.data.loadingMessage += strs[i].substring(1,strs[i].length - 1)
+              }else{
+                this.data.loadingMessage += strs[i]
+              }
               this.setData({
-                loadingMessageMarkdown: this.data.loadingMessage
+                loadingMessageMarkdown: app.towxml(this.data.loadingMessage,'markdown')
               })
             }
           }
         }
       });
     }
+  },
+  latexToMarkdown(text) {
+    // 匹配行内公式 \( ... \)
+    const inlineLatex = /\\\((.*?)\\\)/gs;
+    // 匹配块级公式 \[ ... \]
+    const blockLatex = /\\\[(.*?)\\\]/gs;
+    // 替换行内公式为 Markdown 格式
+    text = text.replace(inlineLatex, (match, p1) => `$${p1}$`);
+    // 替换块级公式为 Markdown 格式
+    text = text.replace(blockLatex, (match, p1) => `$$${p1}$$`);
+
+    // 替换 LaTeX 中的特殊符号，去掉多余的转义符
+    text = text.replace(/\\,/g, '');  // 删除 LaTeX 的空格符号
+    text = text.replace(/\\/g, '');   // 移除反斜杠
+
+    // 替换常见数学函数符号，确保其符合 LaTeX 格式
+    const commonSymbols = {
+      'sin': '\\sin',
+      'cos': '\\cos',
+      'tan': '\\tan',
+      'log': '\\log',
+      'ln': '\\ln',
+      'exp': '\\exp',
+      'sqrt': '\\sqrt',
+      'frac': '\\frac',
+      'sum': '\\sum',
+      'prod': '\\prod',
+      'int': '\\int',
+      'cdot': '\\cdot',
+      'quad': '\\quad',
+      "left": '',
+      "right": '',
+      "approx":'\\approx',
+      "to": '\\to',
+      "boxed": '\\boxed',
+      "limlimits": '\\lim\\limits'
+    };
+    console.log("-----")
+    console.log(text)
+    console.log(text.indexOf('limlimits'))
+    for (const [key, value] of Object.entries(commonSymbols)) {
+      const regex = new RegExp(`${key}`, 'g');
+      text = text.replace(regex, value);
+    }
+    console.log(text)
+    text = text.replace(/(\$\$?)([^$]+?)\1/g, (match, delimiter, content) => {
+      // 如果是单个 $ 包裹的内容，进行 trim()
+      if (delimiter === "$$") {
+        return delimiter + content + delimiter; // 不做修改，保留 $$ 包裹
+      } else {
+        return delimiter + content.trim() + delimiter; // 对 $ 包裹的内容进行 trim()
+      }
+    });
+    return text;
   },
   longTextDialogueSubmit() {
     let messages = this.data.messages
@@ -788,7 +854,7 @@ Page({
   uploadFile(file, type) {
     let _this = this
     wx.uploadFile({
-      url: 'https://ubeego.chat/file/uploadPicture?bucketType=1',
+      url: CONFIG.baseUrl + '/file/uploadPicture?bucketType=1',
       method: "POST",
       header: {
         'Authorization': wx.getStorageSync('token')
@@ -958,11 +1024,10 @@ Page({
   },
 
   openWebview() {
+    console.log('https://ubeego.chat/index.html?text=' + this.data.answer)
     this.setData({
       webViewFlag: 1
     })
-    console.log(this.data.answer)
-    console.log('https://7072-prod-7ghr1n1r9680b968-1331511268.tcb.qcloud.la/latex/index.html?text=' + this.data.answer)
   },
 
   bindGetMsg(e) {
@@ -972,6 +1037,7 @@ Page({
   },
 
   loadSuccess(e) {
+    console.log(1)
     if (this.data.webViewFlag === 1) {
       this.setData({
         webViewFlag: 2

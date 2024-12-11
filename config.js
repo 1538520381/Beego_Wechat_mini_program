@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: 'https://ubeego.chat',
+  baseUrl: 'https://ubeego.chat:8081',
 }
