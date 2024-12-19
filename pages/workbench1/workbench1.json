@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "workbenchSessionMenu": "/components/workbenchSessionMenu/workbenchSessionMenu",
+    "chatContainer0": "/components/chatContainer0/chatContainer0",
+    "chatContainer1": "/components/chatContainer1/chatContainer1",
+    "chatContainer3": "/components/chatContainer3/chatContainer3"
+  }
+}

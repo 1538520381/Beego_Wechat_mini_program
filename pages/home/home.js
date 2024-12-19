@@ -24,13 +24,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    getUserByToken().then((res) => {
-      if (res.data.code === 200) {
-        wx.switchTab({
-          url: '/pages/workbench/workbench'
-        })
-      }
-    })
+    // getUserByToken().then((res) => {
+    //   if (res.data.code === 200) {
+    //     wx.switchTab({
+    //       url: '/pages/workbench/workbench'
+    //     })
+    //   }
+    // })
     this.createChatClock1();
   },
 
@@ -146,11 +146,11 @@ Page({
     getUserByToken().then((res) => {
       if (res.data.code === 200) {
         wx.switchTab({
-          url: '/pages/workbench/workbench'
+          url: '/pages/workbench1/workbench1'
         })
       } else if (res.data.code === 501) {
-        wx.redirectTo({
-          url: '/pages/personalInformation/personalInformation',
+        wx.switchTab({
+          url: '/pages/workbench1/workbench1'
         })
       } else {
         wx.showToast({
@@ -173,8 +173,9 @@ Page({
   login(e) {
     wx.login({
       success: (res) => {
+        console.log(res)
         if (res.code) {
-          login(e.detail.code, res.code).then((res) => {
+          login(res.code).then((res) => {
             if (res.data.code === 200) {
               wx.setStorageSync('token', res.data.data.token)
               this.getUserByToken()

@@ -5,12 +5,13 @@
     <!-- <image class="backIcon" src="../../assets/pictures/back.png" bind:tap="back"></image> -->
     <view class="title">个人中心</view>
   </view>
-  <view class="main">
-    <image class="userAvatar" src="{{user.avatarUrl}}"></image>
-    <button class="uploadAvatar" bind:tap="userUploadImage">上传头像</button>
-    <view class="item">
-      <view class="key">ID</view>
-      <view class="value">{{user.id +"  " +
+  <view class="hasPhone" wx:if="{{!utils.isEmpty(user.phone)}}">
+    <view class="main">
+      <image class="userAvatar" src="{{user.avatarUrl}}"></image>
+      <button class="uploadAvatar" bind:tap="userUploadImage">上传头像</button>
+      <view class="item">
+        <view class="key">ID</view>
+        <view class="value">{{user.id +"  " +
               "『" +
               (user.tag === "0"
                   ? "开发者"
@@ -20,36 +21,42 @@
                           ? "普通用户"
                           : "高级用户") +
               "』"}}</view>
+      </view>
+      <view class="item">
+        <view class="key">昵称</view>
+        <view class="value">{{user.userName}}</view>
+      </view>
+      <view class="divLine"></view>
+      <view class="item">
+        <view class="key">性别</view>
+        <view class="value">{{user.gender === 0 ? '男' : '女'}}</view>
+      </view>
+      <view class="divLine"></view>
+      <view class="item">
+        <view class="key">所在学校</view>
+        <view class="value">{{user.school}}</view>
+      </view>
+      <view class="divLine"></view>
+      <view class="item">
+        <view class="key">所在专业</view>
+        <view class="value">{{user.major}}</view>
+      </view>
+      <view class="divLine"></view>
+      <view class="item">
+        <view class="key">入学年份</view>
+        <view class="value">{{user.enterTime}}</view>
+      </view>
+      <view class="divLine"></view>
     </view>
-    <view class="item">
-      <view class="key">昵称</view>
-      <view class="value">{{user.userName}}</view>
-    </view>
-    <view class="divLine"></view>
-    <view class="item">
-      <view class="key">性别</view>
-      <view class="value">{{user.gender === 0 ? '男' : '女'}}</view>
-    </view>
-    <view class="divLine"></view>
-    <view class="item">
-      <view class="key">所在学校</view>
-      <view class="value">{{user.school}}</view>
-    </view>
-    <view class="divLine"></view>
-    <view class="item">
-      <view class="key">所在专业</view>
-      <view class="value">{{user.major}}</view>
-    </view>
-    <view class="divLine"></view>
-    <view class="item">
-      <view class="key">入学年份</view>
-      <view class="value">{{user.enterTime}}</view>
-    </view>
-    <view class="divLine"></view>
+    <button class="button" bind:tap="updateInformation">修改信息</button>
+    <button class="button" bind:tap="openDialog">意见反馈</button>
+    <button class="button" bind:tap="logout">退出登录</button>
   </view>
-  <button class="button" bind:tap="updateInformation">修改信息</button>
-  <button class="button" bind:tap="openDialog">意见反馈</button>
-  <button class="button" bind:tap="logout">退出登录</button>
+  <view class="noPhone" wx:else>
+    <image class="logo" src="/assets/pictures/logo.jpg" mode="widthFix"></image>
+    <view class="title">申请获得您的手机号以便于与网页端账号同步</view>
+    <button class='getPhoneButton' open-type="getPhoneNumber" bindgetphonenumber="getPhone">手机号授权登录</button>
+  </view>
 
   <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}">
     <view class="modal-dialog" wx:if="{{showModal}}">

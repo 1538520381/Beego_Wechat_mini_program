@@ -125,11 +125,9 @@ page {
 
   line-height: 40px;
 
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .workbench .menuSidebar .sessionMenu .session .deleteIcon {
@@ -269,7 +267,7 @@ page {
 .workbench .footer .scrollToBottomButton {
   position: absolute;
 
-  left: calc(50% - 30px / 2 - 2px / 2);
+  right: 10px;
   top: -30px;
 
   width: 30px;

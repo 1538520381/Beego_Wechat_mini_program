@@ -49,6 +49,16 @@ const getMessageList = (sessionId) => {
   })
 }
 
+const getRobotById = (robotId) => {
+  return request({
+    url: '/bot/getById',
+    method: 'POST',
+    data: {
+      bot_id: robotId
+    }
+  })
+}
+
 const chat = (botId, sessionId, handle, content, fileType, fileName, fileUrl) => {
   return requestStream({
     url: '/chat/agent',
@@ -100,6 +110,7 @@ module.exports = {
   getLearningCornerRobotList,
   getSessionList,
   getMessageList,
+  getRobotById,
   chat,
   longTextDialogueSubmit,
   longTextDialogueQuery

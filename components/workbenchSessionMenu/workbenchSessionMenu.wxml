@@ -1,0 +1,7 @@
+<view class="workbenchSessionMenu">
+  <button class="addSession" bind:tap="addSession">新增会话</button>
+  <view class="session  {{ sessionActive === index ? 'sessionActive' : '' }}" wx:for="{{sessionList}}">
+        <view class="sessionMessage" bind:tap="selectSession" data-index="{{index}}">{{ (item.message === null || item.message.content === null) ? "NEW CHAT" : item.message.content }}</view>
+        <image class="deleteIcon" src="../../assets/pictures/delete.png" bind:tap="deleteSession" data-index="{{index}}"></image>
+      </view>
+</view>

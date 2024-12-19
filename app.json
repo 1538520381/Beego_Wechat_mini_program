@@ -5,7 +5,9 @@
     "pages/workbench/workbench",
     "pages/learningCorner/learningCorner",
     "pages/personalCenter/personalCenter",
-    "pages/modifyInformation/modifyInformation"
+    "pages/modifyInformation/modifyInformation",
+    "pages/workbench1/workbench1",
+    "components/workbenchSessionMenu/workbenchSessionMenu"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -15,7 +17,7 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/workbench/workbench",
+        "pagePath": "pages/workbench1/workbench1",
         "iconPath": "assets/pictures/workbenchUnactived.png",
         "selectedIconPath": "assets/pictures/workbenchActived.png",
         "text": "工作台"
@@ -24,7 +26,7 @@
         "pagePath": "pages/learningCorner/learningCorner",
         "iconPath": "assets/pictures/learningCornerUnactived.png",
         "selectedIconPath": "assets/pictures/learningCornerActived.png",
-        "text": "学习角"
+        "text": "期末必过角"
       },
       {
         "pagePath": "pages/personalCenter/personalCenter",
@@ -36,6 +38,5 @@
   },
   "style": "v2",
   "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "sitemapLocation": "sitemap.json"
 }

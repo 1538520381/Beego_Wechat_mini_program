@@ -1,0 +1,72 @@
+.fileContainer {
+  padding: 0 0 4px 0;
+}
+
+.fileContainer .image {
+  display: inline-block;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid #aaaaaa;
+  border-radius: 5px;
+}
+
+.fileContainer .file {
+  display: inline-block;
+
+  width: 160px;
+  height: 40px;
+
+  border: 1px solid #aaaaaa;
+  border-radius: 5px;
+}
+
+.fileContainer .file .fileIcon {
+  display: inline-block;
+
+  vertical-align: top;
+
+  margin: 2px 0 2px 2px;
+
+  width: 36px;
+  height: 36px;
+}
+
+.fileContainer .file .fileName {
+  display: inline-block;
+
+  vertical-align: top;
+
+  margin: 0 0 0 5px;
+
+  width: calc(100% - 2px - 36px - 5px);
+
+  line-height: 36px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.fileContainer .removeFileButton {
+  display: inline-block;
+
+  vertical-align: bottom;
+
+  margin: 0 0 2px 2px;
+
+  width: 18px;
+  height: 18px;
+
+  background-color: red;
+
+  border-radius: 50%;
+}
+
+.fileContainer .removeFileButton .minusIcon {
+  vertical-align: top;
+
+  width: 100%;
+  height: 100%;
+}

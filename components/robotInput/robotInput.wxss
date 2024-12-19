@@ -1,0 +1,105 @@
+.robotInput {
+  display: inline-flex;
+
+  flex-flow: row;
+
+  position: relative;
+
+  padding: 0 5px 8px 5px;
+
+  width: calc(100% - 5px * 2);
+}
+
+.robotInput .toolBar {
+  display: inline-block;
+
+  margin: auto 0 0 0;
+
+  position: relative;
+}
+
+.robotInput .toolBar .toolButton {
+  padding: 0 2px 0 2px;
+
+  width: 25px;
+  height: 25px;
+}
+
+.robotInput .inputContainer {
+  display: inline-block;
+
+  flex: 1;
+
+  position: relative;
+}
+
+.robotInput .inputContainer .prompts .prompt {
+  font-size: 10px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.robotInput .inputContainer .input {
+  display: inline-block;
+
+  position: relative;
+
+  padding: 5px 5px 5px 5px;
+
+  width: calc(100% - 5px * 2 - 1px * 2);
+  height: 22px;
+  max-height: 90px;
+
+  border: 1px solid #000000;
+  border-radius: 5px;
+
+  font-size: 20px;
+
+  z-index: 0;
+}
+
+.robotInput .controllBar {
+  display: inline-block;
+
+  margin: auto 0 0 0;
+
+  position: relative;
+}
+
+.robotInput .controllBar .controllerButton {
+  display: inline-block;
+
+  position: relative;
+
+  margin: 0 2px 0 2px;
+  padding: 2px 2px 2px 2px;
+
+  width: 25px;
+  height: 25px;
+
+  border-radius: 50%;
+
+  background-color: #46A2FF;
+}
+
+.robotInput .scrollToBottomButton {
+  position: absolute;
+
+  top: -30px;
+  right: 5px;
+
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid #aaaaaa;
+  border-radius: 50%;
+
+  background-color: #ffffff;
+}
+
+.robotInput .scrollToBottomButton .arrowBottomIcon {
+  width: 100%;
+  height: 100%;
+}

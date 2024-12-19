@@ -1,0 +1,23 @@
+<wxs module="utils" src='./robotInput.wxs'></wxs>
+
+<view class="robotInput">
+  <view class="toolBar">
+    <image class="toolButton" src="../../assets/pictures/photo.png" bind:tap="userUploadImage"></image>
+    <image class="toolButton" src="../../assets/pictures/folder.png" bind:tap="userUploadFile"></image>
+  </view>
+  <view class="inputContainer">
+    <view class="prompts">
+      <button class="prompt" wx:for="{{robotPrompts}}" bind:tap="selectPrompt" data-input="{{item}}">{{item}}</button>
+    </view>
+    <fileContainer class="fileContainer" fileName="{{file.name}}" fileType="{{file.type}}" fileUrl="{{file.url}}" wx:if="{{!utils.isEmpty(file)}}" bind:removeFile="removeFile"></fileContainer>
+    <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始你的提问吧" auto-height maxlength="-1"></textarea>
+  </view>
+  <view class="controllBar">
+    <image class="controllerButton" src="../../assets/icons/send.svg" bind:tap="chat"></image>
+    <image class="controllerButton" src="../../assets/icons/longText.svg" bind:tap="selectLinkRobot" wx:if="{{linkFlag}}"></image>
+  </view>
+
+  <view class="scrollToBottomButton" bind:tap="scrollToBottom">
+    <image class="arrowBottomIcon" src="../../assets/pictures/arrowBottom.png"></image>
+  </view>
+</view>

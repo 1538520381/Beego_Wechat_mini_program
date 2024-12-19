@@ -1,0 +1,12 @@
+<view class="message">
+  <view class="{{role === 'assistant' ? 'messageRobot' : 'messageUser'}}">
+    <image class="avatar" src="{{robotAvatar}}" wx:if="{{role === 'assistant'}}"></image>
+    <view class="contentContainer">
+      <towxml class="markdownMessage" nodes="{{contentMarkdown}}"></towxml>
+      <view class="toolBar">
+        <image class="copyIcon" src="/assets/icons/copy.svg" bind:tap="copy" data-text="{{content}}"></image>
+      </view>
+    </view>
+    <image class="avatar" src="{{userAvatar}}" wx:if="{{role === 'user'}}"></image>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {    
+    "messageContainer": "/components/messageContainer/messageContainer",
+    "robotInput": "/components/robotInput/robotInput"
+  }
+}

@@ -7,7 +7,8 @@ const {
 const {
   logout,
   getUserByToken,
-  feedback
+  feedback,
+  fillPhone
 } = require("../../apis/user")
 
 Page({
@@ -92,8 +93,13 @@ Page({
             school: res.data.data["school"],
             major: res.data.data["major"],
             enterTime: res.data.data["enter_time"],
-            tag: res.data.data["tag"]
+            tag: res.data.data["tag"],
+            phone: res.data.data["phone"]
           }
+        })
+      } else if (res.data.code === 501 && !isEmpty(res.data.data['phone'])) {
+        wx.redirectTo({
+          url: '/pages/personalInformation/personalInformation',
         })
       } else {
         wx.showToast({
@@ -106,7 +112,7 @@ Page({
     }).catch((err) => {
       console.log(err)
       wx.showToast({
-        title: "系统异常，请联系管理员",
+        title: "系统异常，请联系管理员1",
         duration: 1000,
         icon: 'error',
         mask: true
@@ -196,6 +202,29 @@ Page({
         title: "系统异常，请联系管理员",
         duration: 1000,
         icon: 'none',
+        mask: true
+      })
+    })
+  },
+  getPhone(e) {
+    console.log(e.detail.code)
+    fillPhone(e.detail.code).then((res) => {
+      if (res.data.code === 200) {
+        this.getUserByToken()
+      } else {
+        wx.showToast({
+          title: res.data.message,
+          duration: 1000,
+          icon: 'error',
+          mask: true
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+      wx.showToast({
+        title: "系统异常，请联系管理员",
+        duration: 1000,
+        icon: 'error',
         mask: true
       })
     })

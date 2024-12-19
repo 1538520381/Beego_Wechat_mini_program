@@ -1,0 +1,26 @@
+.messageContainer {
+  width: 100%;
+}
+
+.messageContainer .messageRow {
+  margin: 0 auto 10px auto;
+
+  width: 95%;
+}
+
+.messageContainer .scrollToBottomButtom{
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 10px;
+  height: 10px;
+
+  background-color: red;
+}
+
+.messageContainer .bottom {
+  width: 100%;
+  height: 10px;
+}

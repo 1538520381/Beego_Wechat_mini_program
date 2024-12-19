@@ -1,0 +1,13 @@
+<wxs module="utils" src='./fileContainer.wxs'></wxs>
+
+<view class="fileContainer">
+  <image class="image" mode="aspectFit" src="{{fileUrl}}" wx:if="{{utils.indexOf(constants.imageType,fileType) !== -1}}"></image>
+  <view class="file" wx:else>
+    <image class="fileIcon" src="{{'/assets/pictures/' + constants.fileTypeIconDict[fileType] + '.png'}}" wx:if="{{!utils.isEmpty(constants.fileTypeIconDict[fileType])}}"></image>
+    <image class="fileIcon" src="/assets/pictures/unknownFile.png" wx:else></image>
+    <view class="fileName">{{ fileName + "." + fileType }}</view>
+  </view>
+  <view class="removeFileButton" bind:tap="removeFile">
+    <image class="minusIcon" src="/assets/icons/minus.svg"></image>
+  </view>
+</view>

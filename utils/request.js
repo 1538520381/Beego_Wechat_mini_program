@@ -1,7 +1,6 @@
 const CONFIG = require('../config')
 
 export const request = (params) => {
-  console.log(CONFIG.baseUrl)
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${CONFIG.baseUrl}${params.url}`,

@@ -99,6 +99,13 @@ Page({
     }, 60 * 1000)
 
     this.updateMainHeight()
+
+    // wx.showToast({
+    //   title: "灵萌施工中，请稍后再使用",
+    //   duration: 1000,
+    //   icon: 'none',
+    //   mask: true
+    // })
   },
 
   /**
@@ -454,17 +461,18 @@ Page({
             } else if (strs[i].startsWith("data:")) {
               if (!this.data.dataFlag) {
                 this.data.loadingMessage += strs[i].substring(5)
+                this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               } else {
-                this.data.loadingMessage = strs[i].substring(6,strs[i].length - 1)
+                // this.data.loadingMessage = strs[i].substring(6,strs[i].length - 1)
+                // this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
                 this.data.dataFlag = false
               }
-              console.log(this.data.loadingMessage)
               this.setData({
                 loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
               })
             } else {
               this.data.loadingMessage += strs[i]
-              console.log(this.data.loadingMessage)
+              this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               this.setData({
                 loadingMessageMarkdown: app.towxml(this.data.loadingMessage, 'markdown')
               })
@@ -472,6 +480,10 @@ Page({
           }
         }
       });
+
+      this.data.requestStream.offChunkReceived(res => {
+        console.log("end")
+      })
     }
   },
   promptChat(data) {
@@ -621,15 +633,17 @@ Page({
             } else if (strs[i].startsWith("data:")) {
               if (!this.data.dataFlag) {
                 this.data.loadingMessage += strs[i].substring(5)
+                this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               } else {
-                this.data.loadingMessage = strs[i].substring(5)
-                this.data.dataFlag = false
+                // this.data.loadingMessage = strs[i].substring(5)
+                // this.data.dataFlag = false
               }
               this.setData({
                 loadingMessageMarkdown: this.data.loadingMessage
               })
             } else {
               this.data.loadingMessage += strs[i]
+              this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               this.setData({
                 loadingMessageMarkdown: this.data.loadingMessage
               })
@@ -663,7 +677,6 @@ Page({
           try {
             const arrayBuffer = new Uint8Array(res.data)
             let str = new TextDecoder().decode(arrayBuffer)
-            console.log(str)
             strs = str.split("\n")
           } catch (e) {
             wx.showToast({
@@ -700,25 +713,25 @@ Page({
             } else if (strs[i].startsWith("data:")) {
               if (!this.data.dataFlag) {
                 this.data.loadingMessage += strs[i].substring(5)
+                this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               } else {
                 if(allFlag){
-                  this.data.loadingMessage = strs[i].substring(6,strs[i].length - 1)
                 }else{
-                  this.data.loadingMessage = strs[i].substring(6)
                 }
                 this.data.dataFlag = false
               }
               this.setData({
-                loadingMessageMarkdown: app.towxml(this.data.loadingMessage,'markdown')
+                loadingMessageMarkdown: app.towxml(this.latexToMarkdown(this.data.loadingMessage),'markdown')
               })
             } else {              
               if(allFlag){
-                this.data.loadingMessage += strs[i].substring(1,strs[i].length - 1)
+                // this.data.loadingMessage += strs[i].substring(1,strs[i].length - 1)
               }else{
                 this.data.loadingMessage += strs[i]
+                this.data.loadingMessage = this.data.loadingMessage.replace(/&#92n/g, '\n').replace(/&#32;/g, ' ')
               }
               this.setData({
-                loadingMessageMarkdown: app.towxml(this.data.loadingMessage,'markdown')
+                loadingMessageMarkdown: app.towxml(this.latexToMarkdown(this.data.loadingMessage),'markdown')
               })
             }
           }
@@ -734,7 +747,7 @@ Page({
     // 替换行内公式为 Markdown 格式
     text = text.replace(inlineLatex, (match, p1) => `$${p1}$`);
     // 替换块级公式为 Markdown 格式
-    text = text.replace(blockLatex, (match, p1) => `$$${p1}$$`);
+    text = text.replace(blockLatex, (match, p1) => `\n$$\n${p1}\n$$\n`);
 
     // 替换 LaTeX 中的特殊符号，去掉多余的转义符
     text = text.replace(/\\,/g, '');  // 删除 LaTeX 的空格符号
@@ -752,7 +765,6 @@ Page({
       'frac': '\\frac',
       'sum': '\\sum',
       'prod': '\\prod',
-      'int': '\\int',
       'cdot': '\\cdot',
       'quad': '\\quad',
       "left": '',
@@ -760,11 +772,18 @@ Page({
       "approx":'\\approx',
       "to": '\\to',
       "boxed": '\\boxed',
-      "limlimits": '\\lim\\limits'
+      "limlimits": '\\lim\\limits',
+      "cdots": '\\cdots',
+      "ddots": '\\ddots',
+      "vdots": '\\vdots',
+      "ldots": '\\ldots',
+      "end": '\\end',
+      "cup":'\\cup',
+      "subseteq": "\\subseteq",
+      "alpha" : "\\alpha",
+      "beta": "\\beta",
     };
-    console.log("-----")
     console.log(text)
-    console.log(text.indexOf('limlimits'))
     for (const [key, value] of Object.entries(commonSymbols)) {
       const regex = new RegExp(`${key}`, 'g');
       text = text.replace(regex, value);
@@ -779,76 +798,6 @@ Page({
       }
     });
     return text;
-  },
-  longTextDialogueSubmit() {
-    let messages = this.data.messages
-    messages.push({
-      role: 'user',
-      content: isEmpty(this.data.input) ? null : app.towxml(this.data.input, 'markdown'),
-      fileType: isEmpty(this.data.file) ? null : this.data.file.fileType,
-      fileName: isEmpty(this.data.file) ? null : this.data.file.fileName,
-      fileUrl: isEmpty(this.data.file) ? null : this.data.file.fileUrl
-    })
-    longTextDialogueSubmit(this.data.robots[this.data.robotActive].id, this.data.sessions[this.data.sessionActive].id, this.data.robots[this.data.robotActive].handle, this.data.input, isEmpty(this.data.file) ? null : this.data.file.fileType, isEmpty(this.data.file) ? null : this.data.file.fileName, isEmpty(this.data.file) ? null : this.data.file.fileUrl).then((res) => {
-      if (res.data.code === 200) {
-        app.globalData.longTextDialogueExecuteEntitys.push({
-          robotId: this.data.robots[this.data.robotActive].id,
-          sessionId: this.data.sessions[this.data.sessionActive].id,
-          executeId: res.data.data['execute_id'],
-        })
-        this.isSessionIdInLongTextDialogueExecuteEntitys(this.data.sessions[this.data.sessionActive].id)
-      } else {
-        wx.showToast({
-          title: res.data.message,
-          duration: 1000,
-          icon: 'none',
-          mask: true
-        })
-      }
-    }).catch((err) => {
-      console.log(err)
-      wx.showToast({
-        title: "系统异常，请联系管理员",
-        duration: 1000,
-        icon: 'none',
-        mask: true
-      })
-    })
-    this.setData({
-      input: "",
-      file: null,
-      messages: messages
-    })
-  },
-  longTextDialogueQuery() {
-    console.log(app.globalData.longTextDialogueExecuteEntitys)
-    for (let i = 0; i < app.globalData.longTextDialogueExecuteEntitys.length; i++) {
-      longTextDialogueQuery(app.globalData.longTextDialogueExecuteEntitys[i].robotId, app.globalData.longTextDialogueExecuteEntitys[i].sessionId, app.globalData.longTextDialogueExecuteEntitys[i].executeId).then((res) => {
-        if (res.data.code === 200) {
-          wx.showToast({
-            title: "长文本生成完毕",
-            duration: 1000,
-            icon: 'none',
-            mask: true
-          })
-          if (app.globalData.longTextDialogueExecuteEntitys[i].sessionId === this.data.sessions[this.data.sessionActive].id) {
-            this.getMessageList()
-          }
-          app.globalData.longTextDialogueExecuteEntitys.splice(i, 1)
-          i--
-        } else {
-
-        }
-      }).catch((err) => {
-        console.log(err)
-        wx.showToast({
-          title: "系统异常，请联系管理员",
-          duration: 1000,
-          icon: 'none',
-          mask: true
-        })
-      })
-    }
   },
 
   uploadFile(file, type) {
@@ -991,6 +940,7 @@ Page({
     this.setData({
       input: e.detail.value
     })
+    console.log(this.data.input)
     this.updateMainHeight()
   },
   inputQuestion(e) {

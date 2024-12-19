@@ -2,13 +2,22 @@ import {
   request
 } from '../utils/request'
 
-const login = (phoneCode, code) => {
+const login = (code) => {
   return request({
-    url: '/wechat/user/login',
+    url: '/wechat/user/LoginNew',
     method: 'POST',
     data: {
-      phone_code: phoneCode,
       code: code
+    }
+  })
+}
+
+const fillPhone = (code) => {
+  return request({
+    url: '/wechat/user/fillPhone',
+    method:'POST',
+    data: {
+      phone_code: code
     }
   })
 }
@@ -75,5 +84,6 @@ module.exports = {
   getUserByToken,
   improvePersonalInformation,
   modifyInformation,
-  feedback
+  feedback,
+  fillPhone
 }

@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "towxml": "/towxml/towxml",
+
+    "messageContainer": "/components/messageContainer/messageContainer"
+  }
+}

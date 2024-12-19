@@ -1,0 +1,28 @@
+<wxs module="utils" src='./workbench1.wxs'></wxs>
+
+<view class="workbench">
+  <view class="menu" style="display:{{menuVis ? 'block' : 'none'}}">
+    <view class="mask" bind:tap="closeMenu"></view>
+    <scroll-view class="menuSidebar" scroll-y>
+      <view class="robotMenu">
+        <view class="robot {{ robotActive === index ? 'robotActive' : '' }}" wx:for="{{robotList}}" bind:tap="selectRobot" data-index="{{index}}">
+          <image class="robotAvatar" src="{{item.avatar}}"></image>
+          <view class="robotName">{{ item.name }}</view>
+        </view>
+      </view>
+      <view class="divLine"></view>
+      <workbenchSessionMenu style="display:{{(index === robotActive && (!linkRobotFlag || item.type !== 3)) ? '' : 'none'}}" wx:for="{{robotList}}" robotId="{{item.id}}" bind:closeMenu="closeMenu" bind:selectSession="selectSession"></workbenchSessionMenu>
+      <workbenchSessionMenu style="display:{{(index === robotActive && linkRobotFlag && item.type === 3) ? '' : 'none'}}" wx:for="{{robotList}}" robotId="{{linkRobot.id}}" bind:closeMenu="closeMenu" bind:selectSession="selectSession"></workbenchSessionMenu>
+    </scroll-view>
+  </view>
+
+  <view id="header" class="header">
+    <image class="menuIcon" src="../../assets/pictures/menu.png" bind:tap="openMenu"></image>
+    <view class="title">工作台</view>
+    <image class="userAvatar" src="{{user.avatar}}"></image>
+  </view>
+
+  <chatContainer0 class="chatContainer" style="display:{{index === robotActive ? 'block' : 'none'}}" wx:for="{{robotList}}" wx:if="{{robotList[robotActive].type === 0}}" robotId="{{item.id}}" robotHandle="{{item.handle}}" robotAvatar="{{item.avatar}}" robotDescription="{{item.description}}" robotPrompts="{{robotList[robotActive].prompts}}" userAvatar="{{user.avatar}}" sessionId="{{robotIdToSessionActiveId[item.id]}}" robotActive="{{robotActive}}" bind:setMenuEnabled="setMenuEnabled"></chatContainer0>
+  <chatContainer1 class="chatContainer" style="display:{{index === robotActive ? 'block' : 'none'}}" wx:for="{{robotList}}" wx:if="{{robotList[robotActive].type === 1}}" robotId="{{item.id}}" robotHandle="{{item.handle}}" robotAvatar="{{item.avatar}}" robotDescription="{{item.description}}" userAvatar="{{user.avatar}}" sessionId="{{robotIdToSessionActiveId[item.id]}}" bind:setMenuEnabled="setMenuEnabled"></chatContainer1>
+  <chatContainer3 class="chatContainer" style="display:{{index === robotActive ? 'block' : 'none'}}" wx:for="{{robotList}}" wx:if="{{robotList[robotActive].type === 3}}" robotId="{{item.id}}" robotHandle="{{item.handle}}" robotAvatar="{{item.avatar}}" robotDescription="{{item.description}}" robotPrompts="{{robotList[robotActive].prompts}}" linkRobotId="{{linkRobot.id}}" linkRobotHandle="{{linkRobot.handle}}" linkRobotAvatar="{{linkRobot.avatar}}" linkRobotDescription="{{linkRobot.description}}" linkRobotPrompts="{{linkRobot.prompts}}" userAvatar="{{user.avatar}}" sessionId="{{robotIdToSessionActiveId[item.id]}}" linkSessionId="{{robotIdToSessionActiveId[linkRobot.id]}}" robotActive="{{robotActive}}" linkRobotFlag="{{linkRobotFlag}}" bind:selectLinkRobot="selectLinkRobot" bind:setMenuEnabled="setMenuEnabled"></chatContainer3>
+</view>

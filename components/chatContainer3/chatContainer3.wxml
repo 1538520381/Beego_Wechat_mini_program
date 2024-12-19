@@ -1,0 +1,4 @@
+<view class="chatContainer3">
+  <chatContainer0 wx:if="{{!linkRobotFlag}}" robotId="{{robotId}}" robotHandle="{{robotHandle}}" robotAvatar="{{robotAvatar}}" robotDescription="{{robotDescription}}" robotPrompts="{{robotPrompts}}" userAvatar="{{userAvatar}}" sessionId="{{sessionId}}" robotActive="{{robotActive}}" linkFlag="{{true}}" bind:selectLinkRobot="selectLinkRobot" bind:setMenuEnabled="setMenuEnabled"></chatContainer0>
+  <chatContainer0 wx:if="{{linkRobotFlag}}" robotId="{{linkRobotId}}" robotHandle="{{linkRobotHandle}}" robotAvatar="{{linkRobotAvatar}}" robotDescription="{{linkRobotDescription}}" robotPrompts="{{linkRobotPrompts}}" userAvatar="{{userAvatar}}" sessionId="{{linkSessionId}}" robotActive="{{robotActive}}" linkFlag="{{true}}" bind:selectLinkRobot="selectLinkRobot" bind:setMenuEnabled="setMenuEnabled"></chatContainer0>
+</view>

@@ -136,6 +136,30 @@ page {
   line-height: 30px;
 }
 
+.personalCenter .noPhone{
+  text-align: center;
+}
+
+.personalCenter .noPhone .logo{
+  margin: 20px;
+
+  width: 100px;
+}
+
+.personalCenter .noPhone .getPhoneButton{
+  margin: 10px auto 0 auto;
+
+  border-radius: 40px;
+
+  background-color: #07C160;
+
+  color: #ffffff;
+}
+
+.personalCenter .noPhone .title{
+  color: #747374;
+}
+
 .personalCenter .modal-mask {
   display: flex;
   justify-content: center;

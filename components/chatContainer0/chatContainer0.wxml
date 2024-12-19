@@ -1,0 +1,4 @@
+<view id="chatContainer" class="chatContainer">
+  <messageContainer id="messageContainer" class="messageContainer" style="height: {{messageContainerHeight + 'px'}}" robotAvatar="{{robotAvatar}}" robotDescription="{{robotDescription}}" userAvatar="{{userAvatar}}" sessionId="{{sessionId}}" answeringFlag="{{answeringFlag}}" answeringContent="{{answeringContent}}" scrollYFlag="{{true}}" latexFlag="{{false}}" bind:updateMessageContainerHeight="updateMessageContainerHeight"></messageContainer>
+  <robotInput id="robotInput" class="robotInput" robotPrompts="{{robotPrompts}}" linkFlag="{{linkFlag}}" bind:updateMessageContainerHeight="updateMessageContainerHeight" bind:chat="chat" bind:scrollToButton="scrollToButton" bind:selectLinkRobot="selectLinkRobot"></robotInput>
+</view>

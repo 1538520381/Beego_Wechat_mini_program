@@ -1,0 +1,54 @@
+.chatContainer1 {
+  text-align: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.chatContainer1 .pictureUploadButton {
+  margin: 10px auto 0 auto;
+}
+
+.chatContainer1 .file {
+  margin: 10px 0 0 0;
+
+  max-width: 80%;
+  height: 80px;
+}
+
+.chatContainer1 .imageRecognitionButton {
+  margin: 10px auto 0 auto;
+}
+
+.chatContainer1 .input {
+  margin: 10px auto 0 auto;
+  padding: 5px 5px 5px 5px;
+
+  width: 80%;
+  height: 18px;
+  max-height: 80px;
+
+  border: 1px solid black;
+  border-radius: 5px;
+
+  text-align: left;
+
+  z-index: 0;
+}
+
+.chatContainer1 .problemSolveButton{
+  margin: 10px auto 0 auto;
+}
+
+.chatContainer1 .divLine {
+  margin: 10px 0 10px 0;
+
+  width: 96%;
+  height: 2px;
+
+  background: #E0E3DA;
+}
+
+.chatContainer1 .messageContainer{
+  width: 100%;
+}

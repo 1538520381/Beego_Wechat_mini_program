@@ -1,4 +1,4 @@
-<wxs module="utils" src='./learningCorner.wxs'></wxs>
+<!-- <wxs module="utils" src='./learningCorner.wxs'></wxs>
 
 <view class="learningCorner">
   <view class="mask" wx:if="{{menuVis}}" bind:tap="closeMenu"></view>
@@ -105,7 +105,7 @@
     </view>
   </view>
 
-  <!-- <view class="robotFlag">
+  <view class="robotFlag">
     <image class="robotFlagIcon" src="/assets/pictures/left.png" bind:tap="openRobot" wx:if="{{robotFlag}}"></image>
     <image class="robotFlagIcon" src="/assets/pictures/right.png" bind:tap="closeRobot" wx:if="{{!robotFlag}}"></image>
   </view>
@@ -167,9 +167,9 @@
       <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
     </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
-  </view> -->
+  </view>
 
-  <!-- <view class="robotFlag">
+  <view class="robotFlag">
     <image class="robotFlagIcon" src="/assets/pictures/dropDown.png" bind:tap="dropDown" wx:if="{{robotFlag}}"></image>
     <image class="robotFlagIcon" src="/assets/pictures/pullUp.png" bind:tap="pullUp" wx:if="{{!robotFlag}}"></image>
   </view>
@@ -231,5 +231,7 @@
       <textarea class="input" value="{{input}}" bindinput="input" placeholder="开始创作你的提示词吧" auto-height maxlength="-1"></textarea>
     </view>
     <button class="send" bind:tap="chat" data-="{{null}}">发送</button>
-  </view> -->
-</view>
+  </view>
+</view> -->
+
+<web-view src="https://ubeego.chat/wechat/learningCornerBook?token={{token}}"></web-view>

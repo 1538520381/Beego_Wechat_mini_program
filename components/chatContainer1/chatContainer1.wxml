@@ -1,0 +1,12 @@
+<wxs module="utils" src='./chatContainer1.wxs'></wxs>
+
+<scroll-view class="chatContainer1" scroll-y>
+  <button class="pictureUploadButton" bind:tap="userUploadImage">图片上传</button>
+  <image class="file" src="{{file.url}}" mode="aspectFit" wx:if="{{file.type === 'jpg' || file.type === 'png'}}"></image>
+  <button class="imageRecognitionButton" wx:if="{{file.type === 'jpg' || file.type === 'png'}}" bind:tap="imageRecognition" data-file="{{file}}">{{questionFlag ? '识别中' : '开始识别'}}</button>
+  <towxml class="questionContentMarkdown" nodes="{{questionContentMarkdown}}"></towxml>
+  <textarea class="input" value="{{questionContent}}" bindinput="inputQuestion" auto-height maxlength="-1"></textarea>
+  <button class="problemSolveButton" bind:tap="problemSolve" data-question="{{questionContent}}" wx:if="{{!utils.isEmpty(questionContent)}}">{{ answeringFlag ? '求解中' : '开始求解' }}</button>
+  <view class="divLine"></view>
+  <messageContainer id="messageContainer" class="messageContainer" robotAvatar="{{robotAvatar}}" robotDescription="{{robotDescription}}" userAvatar="{{userAvatar}}" sessionId="{{sessionId}}" answeringFlag="{{answeringFlag}}" answeringContent="{{answeringContent}}" scrollYFlag="{{false}}" latexFlag="{{true}}"></messageContainer>
+</scroll-view>

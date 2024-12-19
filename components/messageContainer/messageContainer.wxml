@@ -1,0 +1,12 @@
+<scroll-view class="messageContainer" style="height: {{scrollYFlag ? '100%' : none}}" scroll-y="{{scrollYFlag}}" scroll-into-view="{{toView}}">
+  <view class="messageRow">
+    <message robotAvatar="{{robotAvatar}}" userAvatar="{{userAvatar}}" role="assistant" content="{{robotDescription}}" latexFlag="{{false}}"></message>
+  </view>
+  <view class="messageRow" wx:for="{{messageList}}">
+    <message robotAvatar="{{robotAvatar}}" userAvatar="{{userAvatar}}" role="{{item.role}}" content="{{item.content}}" latexFlag="{{latexFlag}}"></message>
+  </view>
+  <view class="messageRow" wx:if="{{answeringFlag}}">
+    <message robotAvatar="{{robotAvatar}}" userAvatar="{{userAvatar}}" role="assistant" content="{{answeringContent}}" latexFlag="{{latexFlag}}"></message>
+  </view>
+  <view id="bottom" class="bottom"></view>
+</scroll-view>
