@@ -8,7 +8,8 @@ page {
   flex: 1;
   overflow-y: hidden;
 
-  background: -webkit-linear-gradient(top,#ffffff,#FACF94,#FFB55C);
+  background-color: #FFE1BE;
+  /* background: -webkit-linear-gradient(top,#ffffff,#FACF94,#FFB55C); */
 }
 
 .home .header {
@@ -27,7 +28,7 @@ page {
 .home .header .leftHeader .logo {
   display: inline-block;
 
-  margin: 5px 0 0 5px;
+  margin: 10px 0 0 15px;
 
   height: 40px;
 }
@@ -57,9 +58,9 @@ page {
   margin: auto;
 
   width: 100%;
-  height: calc(30px * 2 + 40px + 120px);
+  height: calc(100% - 50px);
 
-  text-align: center;
+  text-align: right;
 }
 
 .home .main .name {
@@ -68,7 +69,7 @@ page {
   width: 80%;
 }
 
-.home .main .loginButton{
+.home .main .loginButton {
   margin-top: 25px;
 
   width: 50%;
@@ -88,4 +89,20 @@ page {
   margin: 10px 0 0 0;
 
   font-size: 14px;
+}
+
+.home .main .themeImage {
+  height: 80%;
+}
+
+.home .main .loginRow {
+  width: 100%;
+
+  text-align: center;
+}
+
+.home .main .loginRow .loginButton {
+  margin: 25px auto 0px auto;
+
+  height: 60px;
 }
