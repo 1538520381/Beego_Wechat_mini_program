@@ -92,7 +92,7 @@ page {
 }
 
 .home .main .themeImage {
-  height: 80%;
+  height: 70%;
 }
 
 .home .main .loginRow {

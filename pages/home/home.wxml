@@ -11,7 +11,7 @@
     <view class="slogan1">最懂大学生的AI学习软件</view>
     <button class='loginButton' bind:tap="login">立即体验</button>
     <view>{{error}}</view> -->
-    <image class="themeImage" src="/assets/pictures/theme.png" mode="heightFix"></image>
+    <image class="themeImage" src="/assets/pictures/123.png" mode="heightFix"></image>
     <view class="loginRow">
       <image class="loginButton" src="/assets/pictures/loginButton.png" bind:tap="login" mode="heightFix"></image>
     </view>
